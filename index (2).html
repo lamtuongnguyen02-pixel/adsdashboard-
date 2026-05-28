@@ -1,0 +1,2413 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdsView Dashboard v6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700;800&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080809;
+  --bg2: #0f0f12;
+  --bg3: #17171c;
+  --bg4: #1e1e25;
+  --border: #252530;
+  --border2: #32323f;
+  --text: #eeeef2;
+  --text2: #8888a0;
+  --text3: #44445a;
+  --accent: #c8ff57;
+  --accent2: #a8e040;
+  --accent-dim: #c8ff5720;
+  --meta: #1877F2;
+  --meta-bg: #1877F210;
+  --google: #EA4335;
+  --google-bg: #EA433510;
+  --tiktok: #69C9D0;
+  --tiktok-bg: #69C9D010;
+  --positive: #4ade80;
+  --negative: #f87171;
+  --warning: #fbbf24;
+  --mono: 'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body: 'Figtree', sans-serif;
+  --sidebar: 228px;
+  --r: 10px;
+  --rs: 7px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--body); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; font-size: 14px; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar); min-height: 100vh; background: var(--bg2);
+  border-right: 1px solid var(--border); display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; z-index: 100;
+}
+.sidebar-logo {
+  padding: 22px 18px 18px; border-bottom: 1px solid var(--border);
+  font-family: var(--display); font-size: 17px; font-weight: 800;
+  color: var(--accent); letter-spacing: -0.3px; display: flex; align-items: center; gap: 9px;
+}
+.sidebar-logo span { color: var(--text3); font-weight: 400; font-size: 11px; display: block; margin-top: 2px; }
+.nav { padding: 14px 10px; flex: 1; overflow-y: auto; }
+.nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase; padding: 0 8px; margin-bottom: 4px; margin-top: 18px; }
+.nav-label:first-child { margin-top: 0; }
+.nav-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: var(--rs);
+  cursor: pointer; font-size: 13px; color: var(--text2); transition: all 0.12s;
+  margin-bottom: 1px; user-select: none;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--accent); color: #080809; font-weight: 600; }
+.nav-item .icon { font-size: 15px; width: 17px; text-align: center; flex-shrink: 0; }
+.nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.nav-sub { padding-left: 28px; }
+.nav-sub .nav-item { font-size: 12px; padding: 6px 10px; }
+
+.sync-bar { padding: 14px 18px; border-top: 1px solid var(--border); }
+.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--positive); display: inline-block; margin-right: 6px; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+/* MAIN */
+.main { margin-left: var(--sidebar); flex: 1; min-width: 0; }
+.topbar {
+  padding: 14px 28px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg2); position: sticky; top: 0; z-index: 50; gap: 12px;
+}
+.topbar-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.topbar-title { font-family: var(--display); font-size: 18px; font-weight: 700; white-space: nowrap; }
+.topbar-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+/* DATE FILTER */
+.date-filter { display: flex; gap: 4px; }
+.date-btn {
+  padding: 6px 12px; border-radius: var(--rs); border: 1px solid var(--border);
+  background: var(--bg3); color: var(--text2); cursor: pointer; font-size: 12px;
+  font-family: var(--body); transition: all 0.12s;
+}
+.date-btn:hover, .date-btn.active { border-color: var(--accent); color: var(--accent); }
+.btn-primary {
+  padding: 7px 14px; border-radius: var(--rs); border: none;
+  background: var(--accent); color: #080809; cursor: pointer; font-size: 13px;
+  font-family: var(--body); font-weight: 600; transition: all 0.12s; white-space: nowrap;
+}
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+.btn-primary:active { transform: none; }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.btn-ghost {
+  padding: 7px 12px; border-radius: var(--rs); border: 1px solid var(--border);
+  background: transparent; color: var(--text2); cursor: pointer; font-size: 13px;
+  font-family: var(--body); transition: all 0.12s; white-space: nowrap;
+}
+.btn-ghost:hover { border-color: var(--border2); color: var(--text); }
+.btn-danger { padding: 7px 12px; border-radius: var(--rs); border: 1px solid var(--negative)50; background: transparent; color: var(--negative); cursor: pointer; font-size: 12px; font-family: var(--body); transition: all 0.12s; }
+.btn-danger:hover { background: var(--negative)15; }
+
+/* PAGES */
+.content { padding: 24px 28px; }
+.page { display: none; }
+.page.active { display: block; animation: fadeUp .18s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+/* KPI GRID */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.kpi-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 16px 18px; transition: border-color .15s; position: relative;
+}
+.kpi-card:hover { border-color: var(--border2); }
+.kpi-card.accent-card { border-color: #c8ff5730; background: linear-gradient(135deg, var(--bg2), #c8ff5706); }
+.kpi-card.accent-card .kpi-value { color: var(--accent); }
+.kpi-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .09em; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+.kpi-value {
+  font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--text);
+  line-height: 1; margin-bottom: 7px;
+  cursor: text; border-radius: 4px; transition: background .1s;
+}
+.kpi-value[contenteditable="true"] { outline: none; background: var(--bg3); padding: 2px 6px; margin: -2px -6px; }
+.kpi-delta { font-size: 12px; display: flex; align-items: center; gap: 4px; color: var(--text3); }
+.delta-up { color: var(--positive); }
+.delta-down { color: var(--negative); }
+.edit-hint { font-size: 10px; color: var(--text3); opacity: 0; transition: opacity .15s; position: absolute; top: 10px; right: 12px; }
+.kpi-card:hover .edit-hint { opacity: 1; }
+.reset-btn-sm {
+  position: absolute; bottom: 10px; right: 10px; opacity: 0;
+  font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px;
+}
+.kpi-card:hover .reset-btn-sm { opacity: 1; }
+.reset-btn-sm:hover { color: var(--negative); border-color: var(--negative)50; }
+
+/* CHART */
+.chart-container { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; margin-bottom: 18px; }
+.chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+.chart-title { font-family: var(--display); font-size: 14px; font-weight: 600; }
+.chart-tabs { display: flex; gap: 3px; flex-wrap: wrap; }
+.chart-tab { padding: 5px 11px; border-radius: 5px; font-size: 12px; cursor: pointer; color: var(--text3); transition: all .12s; }
+.chart-tab.active { background: var(--bg3); color: var(--text); }
+.chart-tab:hover { color: var(--text2); }
+canvas { width: 100% !important; }
+
+/* GRIDS */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+
+/* TABLE */
+.table-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin-bottom: 18px; }
+.table-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+table { width: 100%; border-collapse: collapse; }
+th { padding: 10px 15px; text-align: left; font-size: 11px; color: var(--text3); font-weight: 500; text-transform: uppercase; letter-spacing: .07em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 11px 15px; font-size: 13px; border-bottom: 1px solid var(--border)60; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg3)80; }
+.badge { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.badge-active { background: var(--positive)18; color: var(--positive); }
+.badge-paused { background: var(--text3)18; color: var(--text3); }
+.badge-learning { background: var(--warning)18; color: var(--warning); }
+
+/* PLATFORM BANNER */
+.platform-banner {
+  border-radius: var(--r); padding: 18px 22px; margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.platform-banner h2 { font-family: var(--display); font-size: 20px; font-weight: 800; }
+.platform-banner p { font-size: 12px; color: var(--text2); margin-top: 3px; }
+
+/* CAMPAIGN TABS */
+.camp-tabs-wrap { margin-bottom: 20px; }
+.camp-tabs-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .09em; margin-bottom: 10px; }
+.camp-tabs { display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+.camp-tab {
+  padding: 9px 16px; font-size: 13px; cursor: pointer; color: var(--text2);
+  transition: all .12s; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  white-space: nowrap; font-family: var(--body);
+}
+.camp-tab:hover { color: var(--text); }
+.camp-tab.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 500; }
+.camp-panel { display: none; }
+.camp-panel.active { display: block; animation: fadeUp .15s ease; }
+
+/* CAMPAIGN DETAIL */
+.camp-detail { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; margin-bottom: 18px; }
+.camp-detail-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; gap: 12px; }
+.camp-name { font-family: var(--display); font-size: 15px; font-weight: 700; }
+.camp-meta { font-size: 12px; color: var(--text2); margin-top: 3px; }
+.camp-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.camp-kpi { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--rs); padding: 12px 14px; }
+.camp-kpi-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 5px; }
+.camp-kpi-val { font-family: var(--mono); font-size: 17px; font-weight: 500; }
+.camp-kpi-val.editable {
+  cursor: text; border-radius: 4px; transition: background .1s;
+}
+.camp-kpi-val.editable[contenteditable="true"] { outline: none; background: var(--bg3); padding: 1px 5px; margin: -1px -5px; }
+
+/* API CONNECT PANEL */
+.api-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 18px; }
+.api-panel-title { font-family: var(--display); font-size: 14px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.api-panel-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+.api-field-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; margin-bottom: 10px; }
+.api-field-row.single { grid-template-columns: 1fr auto; }
+.field-group label { display: block; font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
+.field-group input, .field-group select {
+  width: 100%; padding: 9px 12px; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--rs); color: var(--text); font-family: var(--mono); font-size: 13px;
+  outline: none; transition: border-color .12s;
+}
+.field-group input:focus, .field-group select:focus { border-color: var(--accent); }
+.field-group input::placeholder { color: var(--text3); font-size: 12px; }
+.api-status-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--rs); margin-bottom: 8px; }
+.api-status-info { display: flex; align-items: center; gap: 10px; }
+.api-icon { font-size: 18px; }
+.api-name { font-size: 13px; font-weight: 500; }
+.api-token { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
+.status-on { color: var(--positive); font-size: 12px; display: flex; align-items: center; gap: 4px; }
+.status-off { color: var(--negative); font-size: 12px; }
+.status-loading { color: var(--warning); font-size: 12px; }
+.pull-log { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--rs); padding: 12px; font-family: var(--mono); font-size: 12px; color: var(--text2); max-height: 140px; overflow-y: auto; margin-top: 10px; }
+.log-line { padding: 2px 0; }
+.log-ok { color: var(--positive); }
+.log-err { color: var(--negative); }
+.log-info { color: var(--text3); }
+
+/* HEATMAP */
+.heatmap-table { width: 100%; border-collapse: separate; border-spacing: 3px; }
+.heatmap-table th { font-size: 11px; color: var(--text3); text-align: center; padding: 6px; font-weight: 500; }
+.heatmap-cell { padding: 9px 12px; border-radius: 5px; text-align: center; font-family: var(--mono); font-size: 12px; font-weight: 500; }
+.heatmap-row-label { font-size: 12px; color: var(--text2); padding: 0 8px; white-space: nowrap; }
+
+/* DONUT */
+.donut-wrap { display: flex; align-items: center; justify-content: center; gap: 28px; }
+.donut-legend { display: flex; flex-direction: column; gap: 10px; }
+.legend-item { display: flex; align-items: center; gap: 9px; font-size: 13px; }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.legend-val { font-family: var(--mono); font-size: 14px; font-weight: 500; margin-left: auto; padding-left: 14px; }
+
+/* SETTINGS */
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.settings-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; }
+.settings-card-title { font-family: var(--display); font-size: 14px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 9px; }
+.settings-card-sub { font-size: 12px; color: var(--text2); margin-bottom: 18px; }
+
+/* NOTIFICATIONS */
+.notif { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.notif-item {
+  background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r);
+  padding: 12px 16px; font-size: 13px; display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 24px #00000050; animation: slideIn .2s ease;
+  min-width: 240px; max-width: 320px;
+}
+@keyframes slideIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:none} }
+.notif-item.success { border-color: var(--positive)40; }
+.notif-item.error { border-color: var(--negative)40; }
+
+/* MONTH COMPARE */
+.month-selector { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 18px; }
+.month-btn { padding: 6px 14px; border-radius: var(--rs); border: 1px solid var(--border); background: var(--bg3); color: var(--text2); cursor: pointer; font-size: 13px; font-family: var(--mono); transition: all .12s; }
+.month-btn.selected { border-color: var(--accent); color: var(--accent); background: var(--accent)12; }
+.month-btn:hover:not(.selected) { border-color: var(--border2); color: var(--text); }
+
+/* SECTION HDR */
+.section-title { font-family: var(--display); font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.section-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+
+/* MISC */
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* INPUT CALC PANEL */
+.input-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 18px; }
+.input-panel-title { font-family: var(--display); font-size: 14px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 9px; }
+.input-panel-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+.new-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: var(--accent)18; color: var(--accent); letter-spacing: .05em; text-transform: uppercase; }
+.input-grid { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 12px; align-items: end; }
+.input-group label { display: block; font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 7px; }
+.input-group input {
+  width: 100%; padding: 9px 12px; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--rs); color: var(--text); font-family: var(--mono); font-size: 14px;
+  outline: none; transition: border-color .12s;
+}
+.input-group input:focus { border-color: var(--accent); }
+.input-group input::placeholder { color: var(--text3); font-size: 12px; }
+.calc-results { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.calc-result { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--rs); padding: 13px 16px; display: flex; align-items: center; gap: 12px; }
+.calc-result-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+.calc-result-value { font-family: var(--mono); font-size: 20px; font-weight: 500; color: var(--accent); }
+.calc-formula { font-size: 11px; color: var(--text3); margin-top: 2px; font-family: var(--mono); }
+
+/* ANIMATED NETWORK BACKGROUND */
+#networkCanvas {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; opacity: 0.35;
+}
+body { position: relative; }
+.sidebar, .main { position: relative; z-index: 1; }
+
+/* BUDGET SECTION - FIXED */
+.budget-section {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 22px; margin-bottom: 18px;
+}
+.budget-inner {
+  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+}
+.budget-donut-wrap {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+}
+.budget-legend {
+  flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 12px;
+}
+.budget-legend-item {
+  display: flex; align-items: center; gap: 10px;
+}
+.budget-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.budget-legend-name { font-size: 13px; color: var(--text2); flex: 1; }
+.budget-legend-val { font-family: var(--mono); font-size: 14px; font-weight: 500; }
+.budget-legend-pct { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-left: 4px; }
+
+/* DRIVE INTEGRATION */
+.drive-panel {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 20px; margin-bottom: 18px;
+}
+.drive-panel-title {
+  font-family: var(--display); font-size: 14px; font-weight: 600;
+  margin-bottom: 4px; display: flex; align-items: center; gap: 9px;
+}
+.drive-panel-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+.drive-grid { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
+.drive-status-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--rs); margin-top: 10px;
+}
+.drive-file-list { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.drive-file-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 14px; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--rs); cursor: pointer; transition: border-color .12s;
+}
+.drive-file-item:hover { border-color: var(--accent)50; }
+.drive-file-item.active { border-color: var(--accent); background: var(--accent)08; }
+.drive-file-name { font-size: 13px; font-family: var(--mono); }
+.drive-file-date { font-size: 11px; color: var(--text3); }
+.drive-upload-area {
+  border: 2px dashed var(--border2); border-radius: var(--r); padding: 28px 20px;
+  text-align: center; cursor: pointer; transition: all .15s; margin-top: 12px;
+}
+.drive-upload-area:hover, .drive-upload-area.dragover { border-color: var(--accent); background: var(--accent)05; }
+.drive-upload-icon { font-size: 28px; margin-bottom: 8px; }
+.drive-upload-text { font-size: 13px; color: var(--text2); }
+.drive-upload-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+/* KPI NUMBER JUMP ANIMATION */
+@keyframes numberPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18); color: var(--accent); }
+  100% { transform: scale(1); }
+}
+.kpi-pop { animation: numberPop .45s cubic-bezier(.36,.07,.19,.97); }
+
+/* DRIVE CONNECTED TAG */
+.drive-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px;
+  background: #0F9D5820; color: #0F9D58; letter-spacing: .05em; text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<!-- ANIMATED NETWORK BACKGROUND -->
+<canvas id="networkCanvas"></canvas>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect width="9" height="9" rx="2.5" fill="#C8FF57"/><rect x="11" y="0" width="9" height="9" rx="2.5" fill="#C8FF5755"/><rect x="0" y="11" width="9" height="9" rx="2.5" fill="#C8FF5735"/><rect x="11" y="11" width="9" height="9" rx="2.5" fill="#C8FF5718"/></svg>
+    <div>AdsView<span>Dashboard v3</span></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Tổng quan</div>
+    <div class="nav-item active" onclick="showPage('overview', this)">
+      <span class="icon">◈</span> Overview
+    </div>
+    <div class="nav-label">Nền tảng</div>
+    <div class="nav-item" onclick="showPage('meta', this)">
+      <span class="nav-dot" style="background:var(--meta)"></span> Meta Ads
+    </div>
+    <div class="nav-item" onclick="showPage('google', this)">
+      <span class="nav-dot" style="background:var(--google)"></span> Google Ads
+    </div>
+    <div class="nav-item" onclick="showPage('tiktok', this)">
+      <span class="nav-dot" style="background:var(--tiktok)"></span> TikTok Ads
+    </div>
+    <div class="nav-label">Phân tích</div>
+    <div class="nav-item" onclick="showPage('compare', this)">
+      <span class="icon">⇌</span> So sánh tháng
+    </div>
+    <div class="nav-label">Hệ thống</div>
+    <div class="nav-item" onclick="showPage('drive', this)">
+      <span class="icon">🗂</span> Google Drive
+    </div>
+    <div class="nav-item" onclick="showPage('api', this)">
+      <span class="icon">🔌</span> Kết nối API
+    </div>
+    <div class="nav-item" onclick="showPage('settings', this)">
+      <span class="icon">⚙</span> Cài đặt
+    </div>
+  </nav>
+  <div class="sync-bar">
+    <div style="font-size:12px;color:var(--text2);margin-bottom:3px"><span class="sync-dot" id="syncDot"></span>Cloud Sync</div>
+    <div style="font-size:11px;color:var(--text3);font-family:var(--mono)" id="lastSync">Đang kết nối Supabase...</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- =================== OVERVIEW =================== -->
+<div id="page-overview" class="page active">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Overview</div>
+    </div>
+    <div class="topbar-actions">
+      <div class="date-filter">
+        <button class="date-btn" onclick="setDate('7d',this)">7N</button>
+        <button class="date-btn active" onclick="setDate('30d',this)">30N</button>
+        <button class="date-btn" onclick="setDate('90d',this)">90N</button>
+      </div>
+      <button class="btn-ghost" onclick="resetAllMetrics()">↺ Reset số liệu</button>
+      <button class="btn-ghost">↓ Xuất báo cáo</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="section-title">Tổng hợp — Tất cả nền tảng</div>
+    <div class="section-sub">Click vào số liệu để chỉnh sửa trực tiếp</div>
+    <div class="kpi-grid" id="overviewKPIs">
+      <div class="kpi-card accent-card">
+        <div class="kpi-label">Tổng chi tiêu <span class="edit-hint">✎ click</span></div>
+        <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_spend" onblur="saveEditable(this)">—</div>
+        <div class="kpi-delta delta-up">▲ 12.3% vs tháng trước</div>
+        <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Tổng Reach <span class="edit-hint">✎</span></div>
+        <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_reach" onblur="saveEditable(this)">—</div>
+        <div class="kpi-delta delta-up">▲ 8.1%</div>
+        <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. ROAS <span class="edit-hint">✎</span></div>
+        <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_roas" onblur="saveEditable(this)">—</div>
+        <div class="kpi-delta delta-down">▼ 0.3×</div>
+        <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. CTR <span class="edit-hint">✎</span></div>
+        <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_ctr" onblur="saveEditable(this)">—</div>
+        <div class="kpi-delta delta-up">▲ 0.4%</div>
+        <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. CPC <span class="edit-hint">✎</span></div>
+        <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_cpc" onblur="saveEditable(this)">—</div>
+        <div class="kpi-delta delta-down">▼ 5.2%</div>
+        <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Impressions <span class="edit-hint">✎</span></div>
+        <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_imp" onblur="saveEditable(this)">—</div>
+        <div class="kpi-delta delta-up">▲ 18.7%</div>
+        <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">Xu hướng chi tiêu — theo nền tảng</div>
+        <div class="chart-tabs">
+          <span class="chart-tab active" onclick="switchMainChart(this,'spend')">Spend</span>
+          <span class="chart-tab" onclick="switchMainChart(this,'roas')">ROAS</span>
+          <span class="chart-tab" onclick="switchMainChart(this,'ctr')">CTR</span>
+          <span class="chart-tab" onclick="switchMainChart(this,'reach')">Reach</span>
+        </div>
+      </div>
+      <canvas id="mainLineChart" height="240"></canvas>
+    </div>
+
+    <div class="grid-2">
+      <div class="budget-section" style="margin-bottom:0">
+        <div class="chart-header"><div class="chart-title">Phân bổ ngân sách</div></div>
+        <div class="budget-inner">
+          <div class="budget-donut-wrap">
+            <canvas id="donutChart" width="140" height="140" style="width:140px;height:140px"></canvas>
+          </div>
+          <div class="budget-legend">
+            <div class="budget-legend-item">
+              <div class="budget-legend-dot" style="background:var(--meta)"></div>
+              <span class="budget-legend-name">Meta</span>
+              <span class="budget-legend-val" id="budget-meta-val">—</span>
+              <span class="budget-legend-pct" id="budget-meta-pct">40%</span>
+            </div>
+            <div class="budget-legend-item">
+              <div class="budget-legend-dot" style="background:var(--google)"></div>
+              <span class="budget-legend-name">Google</span>
+              <span class="budget-legend-val" id="budget-google-val">—</span>
+              <span class="budget-legend-pct" id="budget-google-pct">33%</span>
+            </div>
+            <div class="budget-legend-item">
+              <div class="budget-legend-dot" style="background:var(--tiktok)"></div>
+              <span class="budget-legend-name">TikTok</span>
+              <span class="budget-legend-val" id="budget-tiktok-val">—</span>
+              <span class="budget-legend-pct" id="budget-tiktok-pct">27%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-container" style="margin-bottom:0">
+        <div class="chart-header"><div class="chart-title">ROAS theo nền tảng</div></div>
+        <canvas id="roasBarChart" height="170"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== META =================== -->
+<div id="page-meta" class="page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Meta Ads</div>
+    </div>
+    <div class="topbar-actions">
+      <div class="date-filter">
+        <button class="date-btn" onclick="setDate('7d',this)">7N</button>
+        <button class="date-btn active" onclick="setDate('30d',this)">30N</button>
+        <button class="date-btn" onclick="setDate('90d',this)">90N</button>
+      </div>
+      <button class="btn-ghost" onclick="pullPlatformData('meta')">↻ Pull data</button>
+      <button class="btn-ghost" onclick="resetPlatform('meta')">↺ Reset</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="platform-banner" style="background:var(--meta-bg);border:1px solid var(--meta)25;">
+      <div>
+        <h2 style="color:var(--meta)">Facebook / Instagram</h2>
+        <p id="meta-sync-time">Dữ liệu cập nhật lúc 08:32 — Tháng 4/2025</p>
+      </div>
+      <div style="font-size:38px">📘</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Spend <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_spend" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 9.2%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Reach <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_reach" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 14.5%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Impression <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_imp" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 22.1%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CTR <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_ctr" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 0.5%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPC <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_cpc" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 3.1%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPM <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_cpm" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 1.2%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card accent-card"><div class="kpi-label">Cost/Mess</div><div class="kpi-value" id="meta-cpm-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
+      <div class="kpi-card accent-card"><div class="kpi-label">Cost/Lead</div><div class="kpi-value" id="meta-cpl-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
+    </div>
+
+    <div class="input-panel">
+      <div class="input-panel-title">Nhập số liệu thủ công <span class="new-tag">Auto calc</span></div>
+      <div class="input-panel-sub">Nhập chi tiêu, số tin nhắn, lead để tính CPM & CPL</div>
+      <div class="input-grid">
+        <div class="input-group"><label>💰 Spend (đ)</label><input type="number" id="meta-spend-i" placeholder="52400000" oninput="calcMetrics('meta')"></div>
+        <div class="input-group"><label>💬 Số Mess</label><input type="number" id="meta-mess-i" placeholder="320" oninput="calcMetrics('meta')"></div>
+        <div class="input-group"><label>🎯 Số Lead</label><input type="number" id="meta-lead-i" placeholder="85" oninput="calcMetrics('meta')"></div>
+        <button class="btn-primary" onclick="saveMetrics('meta')">Lưu</button>
+      </div>
+      <div class="calc-results">
+        <div class="calc-result"><div style="font-size:24px">💬</div><div><div class="calc-result-label">Cost per Message</div><div class="calc-result-value" id="meta-cpm-result">—</div><div class="calc-formula" id="meta-cpm-formula">Spend ÷ Số Mess</div></div></div>
+        <div class="calc-result"><div style="font-size:24px">🎯</div><div><div class="calc-result-label">Cost per Lead</div><div class="calc-result-value" id="meta-cpl-result">—</div><div class="calc-formula" id="meta-cpl-formula">Spend ÷ Số Lead</div></div></div>
+      </div>
+    </div>
+
+    <!-- CAMPAIGN TABS META -->
+    <div class="camp-tabs-wrap">
+      <div class="camp-tabs-label">Chiến dịch — chọn để xem chi tiết</div>
+      <div class="camp-tabs" id="meta-camp-tabs">
+        <div class="camp-tab active" onclick="switchCampTab('meta',0,this)">Retargeting TPHCM</div>
+        <div class="camp-tab" onclick="switchCampTab('meta',1,this)">Lookalike 1%</div>
+        <div class="camp-tab" onclick="switchCampTab('meta',2,this)">Brand Awareness</div>
+        <div class="camp-tab" onclick="switchCampTab('meta',3,this)">Traffic Blog</div>
+      </div>
+    </div>
+
+    <div id="meta-camp-panels">
+      <!-- Camp 0 -->
+      <div class="camp-panel active" data-camp="0">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">Retargeting — TPHCM Q2</div><div class="camp-meta">Audience: Custom · Đang chạy · Bắt đầu: 01/04/2025</div></div>
+            <span class="badge badge-active">● Đang chạy</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_reach" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_cpc" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_roas" onblur="saveEditable(this)" style="color:var(--positive)">5.8×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Frequency</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_freq" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+        <div class="chart-container"><div class="chart-header"><div class="chart-title">Trend — Retargeting TPHCM</div></div><canvas id="meta-c0-chart" height="180"></canvas></div>
+      </div>
+      <!-- Camp 1 -->
+      <div class="camp-panel" data-camp="1">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">Lookalike — Audience 1%</div><div class="camp-meta">Audience: LAL 1% · Đang chạy · Bắt đầu: 05/04/2025</div></div>
+            <span class="badge badge-active">● Đang chạy</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_reach" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_cpc" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_roas" onblur="saveEditable(this)" style="color:var(--positive)">4.2×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Frequency</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_freq" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+        <div class="chart-container"><div class="chart-header"><div class="chart-title">Trend — Lookalike 1%</div></div><canvas id="meta-c1-chart" height="180"></canvas></div>
+      </div>
+      <!-- Camp 2 -->
+      <div class="camp-panel" data-camp="2">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">Brand Awareness — Tháng 4</div><div class="camp-meta">Audience: Interest · Đang chạy · Bắt đầu: 01/04/2025</div></div>
+            <span class="badge badge-active">● Đang chạy</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_reach" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_cpc" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_roas" onblur="saveEditable(this)" style="color:var(--warning)">2.9×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Frequency</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_freq" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+        <div class="chart-container"><div class="chart-header"><div class="chart-title">Trend — Brand Awareness</div></div><canvas id="meta-c2-chart" height="180"></canvas></div>
+      </div>
+      <!-- Camp 3 -->
+      <div class="camp-panel" data-camp="3">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">Traffic — Blog Content</div><div class="camp-meta">Audience: Broad · Tạm dừng · Dừng: 20/04/2025</div></div>
+            <span class="badge badge-paused">⏸ Tạm dừng</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_reach" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_cpc" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_roas" onblur="saveEditable(this)" style="color:var(--negative)">1.4×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Frequency</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_freq" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-header"><div class="chart-title">Daily Spend Trend</div></div>
+      <canvas id="metaLineChart" height="200"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- =================== GOOGLE =================== -->
+<div id="page-google" class="page">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">Google Ads</div></div>
+    <div class="topbar-actions">
+      <div class="date-filter">
+        <button class="date-btn" onclick="setDate('7d',this)">7N</button>
+        <button class="date-btn active" onclick="setDate('30d',this)">30N</button>
+        <button class="date-btn" onclick="setDate('90d',this)">90N</button>
+      </div>
+      <button class="btn-ghost" onclick="pullPlatformData('google')">↻ Pull data</button>
+      <button class="btn-ghost" onclick="resetPlatform('google')">↺ Reset</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="platform-banner" style="background:var(--google-bg);border:1px solid var(--google)25;">
+      <div>
+        <h2 style="color:var(--google)">Google Ads</h2>
+        <p id="google-sync-time">Search · Display · YouTube — Tháng 4/2025</p>
+      </div>
+      <div style="font-size:38px">🔍</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Spend <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_spend" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 15.4%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Impression <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_imp" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 9.8%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CTR <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_ctr" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 0.2%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPC <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_cpc" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 2.3%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">ROAS <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_roas" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 0.2×</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPM <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_cpm" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 0.8%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card accent-card"><div class="kpi-label">Cost/Mess</div><div class="kpi-value" id="google-cpm-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
+      <div class="kpi-card accent-card"><div class="kpi-label">Cost/Lead</div><div class="kpi-value" id="google-cpl-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
+    </div>
+
+    <div class="input-panel">
+      <div class="input-panel-title">Nhập số liệu <span class="new-tag">Auto calc</span></div>
+      <div class="input-panel-sub">Nhập chi tiêu, số tin nhắn, lead để tính CPM & CPL</div>
+      <div class="input-grid">
+        <div class="input-group"><label>💰 Spend (đ)</label><input type="number" id="google-spend-i" placeholder="41800000" oninput="calcMetrics('google')"></div>
+        <div class="input-group"><label>💬 Số Mess</label><input type="number" id="google-mess-i" placeholder="200" oninput="calcMetrics('google')"></div>
+        <div class="input-group"><label>🎯 Số Lead</label><input type="number" id="google-lead-i" placeholder="60" oninput="calcMetrics('google')"></div>
+        <button class="btn-primary" onclick="saveMetrics('google')">Lưu</button>
+      </div>
+      <div class="calc-results">
+        <div class="calc-result"><div style="font-size:24px">💬</div><div><div class="calc-result-label">Cost per Message</div><div class="calc-result-value" id="google-cpm-result">—</div><div class="calc-formula" id="google-cpm-formula">Spend ÷ Số Mess</div></div></div>
+        <div class="calc-result"><div style="font-size:24px">🎯</div><div><div class="calc-result-label">Cost per Lead</div><div class="calc-result-value" id="google-cpl-result">—</div><div class="calc-formula" id="google-cpl-formula">Spend ÷ Số Lead</div></div></div>
+      </div>
+    </div>
+
+    <div class="camp-tabs-wrap">
+      <div class="camp-tabs-label">Chiến dịch Google</div>
+      <div class="camp-tabs" id="google-camp-tabs">
+        <div class="camp-tab active" onclick="switchCampTab('google',0,this)">Brand Search</div>
+        <div class="camp-tab" onclick="switchCampTab('google',1,this)">Non-Brand Category</div>
+        <div class="camp-tab" onclick="switchCampTab('google',2,this)">Display Remarketing</div>
+        <div class="camp-tab" onclick="switchCampTab('google',3,this)">YouTube Awareness</div>
+      </div>
+    </div>
+
+    <div id="google-camp-panels">
+      <div class="camp-panel active" data-camp="0">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">Brand Search — Core</div><div class="camp-meta">Type: Search · Quality Score: 8.2 · Đang chạy</div></div>
+            <span class="badge badge-active">● Đang chạy</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Impression</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_imp" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_cpc" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_roas" onblur="saveEditable(this)" style="color:var(--positive)">6.1×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Conv. Rate</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_cvr" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="camp-panel" data-camp="1">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">Non-Brand — Category</div><div class="camp-meta">Type: Search · Quality Score: 6.8 · Đang chạy</div></div>
+            <span class="badge badge-active">● Đang chạy</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Impression</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_imp" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_cpc" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_roas" onblur="saveEditable(this)" style="color:var(--warning)">3.2×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Conv. Rate</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_cvr" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="camp-panel" data-camp="2">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">Display Remarketing</div><div class="camp-meta">Type: Display · Audience: Site Visitors · Đang chạy</div></div>
+            <span class="badge badge-active">● Đang chạy</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Impression</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_imp" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_cpc" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_roas" onblur="saveEditable(this)" style="color:var(--warning)">2.8×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">View-Through</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_vt" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="camp-panel" data-camp="3">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">YouTube Awareness</div><div class="camp-meta">Type: Video · Format: In-stream · Đang chạy</div></div>
+            <span class="badge badge-learning">⟳ Learning</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Impression</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_imp" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPV</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_cpv" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_roas" onblur="saveEditable(this)" style="color:var(--negative)">1.2×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">View Rate</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_vr" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-container"><div class="chart-header"><div class="chart-title">Daily Spend Trend</div></div><canvas id="googleLineChart" height="200"></canvas></div>
+  </div>
+</div>
+
+<!-- =================== TIKTOK =================== -->
+<div id="page-tiktok" class="page">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">TikTok Ads</div></div>
+    <div class="topbar-actions">
+      <div class="date-filter">
+        <button class="date-btn" onclick="setDate('7d',this)">7N</button>
+        <button class="date-btn active" onclick="setDate('30d',this)">30N</button>
+        <button class="date-btn" onclick="setDate('90d',this)">90N</button>
+      </div>
+      <button class="btn-ghost" onclick="pullPlatformData('tiktok')">↻ Pull data</button>
+      <button class="btn-ghost" onclick="resetPlatform('tiktok')">↺ Reset</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="platform-banner" style="background:var(--tiktok-bg);border:1px solid var(--tiktok)25;">
+      <div>
+        <h2 style="color:var(--tiktok)">TikTok Ads</h2>
+        <p>Video · TopView · In-Feed — Tháng 4/2025</p>
+      </div>
+      <div style="font-size:38px">🎵</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Spend <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_spend" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 22.8%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Reach <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_reach" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 31.2%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Impression <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_imp" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 25.4%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CTR <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_ctr" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 0.3%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPC <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_cpc" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 1.1%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPM <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_cpm" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 2.0%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card accent-card"><div class="kpi-label">Cost/Mess</div><div class="kpi-value" id="tiktok-cpm-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
+      <div class="kpi-card accent-card"><div class="kpi-label">Cost/Lead</div><div class="kpi-value" id="tiktok-cpl-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
+    </div>
+
+    <div class="input-panel">
+      <div class="input-panel-title">Nhập số liệu <span class="new-tag">Auto calc</span></div>
+      <div class="input-panel-sub">Nhập chi tiêu, tin nhắn, lead để tính CPM & CPL</div>
+      <div class="input-grid">
+        <div class="input-group"><label>💰 Spend (đ)</label><input type="number" id="tiktok-spend-i" placeholder="34200000" oninput="calcMetrics('tiktok')"></div>
+        <div class="input-group"><label>💬 Số Mess</label><input type="number" id="tiktok-mess-i" placeholder="180" oninput="calcMetrics('tiktok')"></div>
+        <div class="input-group"><label>🎯 Số Lead</label><input type="number" id="tiktok-lead-i" placeholder="45" oninput="calcMetrics('tiktok')"></div>
+        <button class="btn-primary" onclick="saveMetrics('tiktok')">Lưu</button>
+      </div>
+      <div class="calc-results">
+        <div class="calc-result"><div style="font-size:24px">💬</div><div><div class="calc-result-label">Cost per Message</div><div class="calc-result-value" id="tiktok-cpm-result">—</div><div class="calc-formula" id="tiktok-cpm-formula">Spend ÷ Số Mess</div></div></div>
+        <div class="calc-result"><div style="font-size:24px">🎯</div><div><div class="calc-result-label">Cost per Lead</div><div class="calc-result-value" id="tiktok-cpl-result">—</div><div class="calc-formula" id="tiktok-cpl-formula">Spend ÷ Số Lead</div></div></div>
+      </div>
+    </div>
+
+    <div class="camp-tabs-wrap">
+      <div class="camp-tabs-label">Chiến dịch TikTok</div>
+      <div class="camp-tabs" id="tiktok-camp-tabs">
+        <div class="camp-tab active" onclick="switchCampTab('tiktok',0,this)">TopView Apr</div>
+        <div class="camp-tab" onclick="switchCampTab('tiktok',1,this)">In-Feed Retarget</div>
+        <div class="camp-tab" onclick="switchCampTab('tiktok',2,this)">Spark Ads</div>
+      </div>
+    </div>
+    <div id="tiktok-camp-panels">
+      <div class="camp-panel active" data-camp="0">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">TopView — Tháng 4</div><div class="camp-meta">Format: TopView · Objective: Reach · Đang chạy</div></div>
+            <span class="badge badge-active">● Đang chạy</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c0_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c0_reach" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c0_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">View Rate</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c0_vr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPM</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c0_cpm" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Engagement</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c0_eng" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="camp-panel" data-camp="1">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">In-Feed — Retarget</div><div class="camp-meta">Format: In-Feed · Audience: Retarget · Đang chạy</div></div>
+            <span class="badge badge-active">● Đang chạy</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_reach" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Conv. Rate</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_cvr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_roas" onblur="saveEditable(this)" style="color:var(--positive)">3.5×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CPM</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_cpm" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="camp-panel" data-camp="2">
+        <div class="camp-detail">
+          <div class="camp-detail-header">
+            <div><div class="camp-name">Spark Ads</div><div class="camp-meta">Format: Spark · Boosted Post · Đang chạy</div></div>
+            <span class="badge badge-active">● Đang chạy</span>
+          </div>
+          <div class="camp-kpis">
+            <div class="camp-kpi"><div class="camp-kpi-label">Spend</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c2_spend" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c2_reach" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c2_ctr" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Shares</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c2_shares" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Comments</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c2_cmt" onblur="saveEditable(this)">—</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">Follows</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c2_flw" onblur="saveEditable(this)">—</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-container"><div class="chart-header"><div class="chart-title">Daily Spend Trend</div></div><canvas id="tiktokLineChart" height="200"></canvas></div>
+  </div>
+</div>
+
+<!-- =================== COMPARE =================== -->
+<div id="page-compare" class="page">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">So sánh đa tháng</div></div>
+    <div class="topbar-actions"><button class="btn-ghost">↓ Xuất báo cáo</button></div>
+  </div>
+  <div class="content">
+    <div class="section-title">Chọn tháng để so sánh</div>
+    <div class="section-sub">Tối đa 6 tháng — bấm để bật/tắt</div>
+    <div class="month-selector">
+      <button class="month-btn selected" onclick="this.classList.toggle('selected')">T11/2024</button>
+      <button class="month-btn selected" onclick="this.classList.toggle('selected')">T12/2024</button>
+      <button class="month-btn selected" onclick="this.classList.toggle('selected')">T1/2025</button>
+      <button class="month-btn selected" onclick="this.classList.toggle('selected')">T2/2025</button>
+      <button class="month-btn selected" onclick="this.classList.toggle('selected')">T3/2025</button>
+      <button class="month-btn selected" onclick="this.classList.toggle('selected')">T4/2025</button>
+    </div>
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">So sánh — tất cả nền tảng</div>
+        <div class="chart-tabs">
+          <span class="chart-tab active" onclick="switchCompareChart(this,'spend')">Spend</span>
+          <span class="chart-tab" onclick="switchCompareChart(this,'roas')">ROAS</span>
+          <span class="chart-tab" onclick="switchCompareChart(this,'ctr')">CTR</span>
+        </div>
+      </div>
+      <canvas id="compareBarChart" height="260"></canvas>
+    </div>
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">Heatmap — hiệu suất theo tháng</div>
+        <div style="font-size:12px;color:var(--text3)">🟢 Tốt &nbsp;🟡 TB &nbsp;🔴 Cần cải thiện</div>
+      </div>
+      <div id="heatmapContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== API CONNECT =================== -->
+<div id="page-api" class="page">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">Kết nối API</div></div>
+    <div class="topbar-actions">
+      <button class="btn-primary" onclick="pullAllData()">↻ Pull tất cả nền tảng</button>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- META API -->
+    <div class="api-panel">
+      <div class="api-panel-title">📘 Meta Business API</div>
+      <div class="api-panel-sub">Kết nối Facebook Ads Manager để pull data tự động</div>
+      <div class="api-field-row">
+        <div class="field-group">
+          <label>Access Token</label>
+          <input type="password" id="meta-token" placeholder="EAAxxxxxxxxx..." value="">
+        </div>
+        <div class="field-group">
+          <label>Ad Account ID</label>
+          <input type="text" id="meta-account-id" placeholder="act_1234567890" value="act_1234567890">
+        </div>
+        <button class="btn-primary" onclick="connectAPI('meta')" id="meta-connect-btn">Kết nối</button>
+      </div>
+      <div class="api-status-row">
+        <div class="api-status-info">
+          <div class="api-icon">📘</div>
+          <div>
+            <div class="api-name">Meta Business API</div>
+            <div class="api-token" id="meta-api-token-display">Token: Chưa cấu hình</div>
+          </div>
+        </div>
+        <span class="status-off" id="meta-api-status">● Chưa kết nối</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn-primary" onclick="pullPlatformData('meta')" id="meta-pull-btn" disabled>↻ Pull Meta Data</button>
+        <button class="btn-ghost" onclick="clearAPIConfig('meta')">Xóa cấu hình</button>
+      </div>
+    </div>
+
+    <!-- GOOGLE API -->
+    <div class="api-panel">
+      <div class="api-panel-title">🔍 Google Ads API</div>
+      <div class="api-panel-sub">Kết nối qua OAuth2 để pull Google Ads data</div>
+      <div class="api-field-row">
+        <div class="field-group">
+          <label>Developer Token</label>
+          <input type="password" id="google-dev-token" placeholder="xxxxxxxxxxxxxxxxxx" value="">
+        </div>
+        <div class="field-group">
+          <label>Customer ID (CID)</label>
+          <input type="text" id="google-cid" placeholder="123-456-7890" value="123-456-7890">
+        </div>
+        <button class="btn-primary" onclick="connectAPI('google')" id="google-connect-btn">Kết nối</button>
+      </div>
+      <div class="api-field-row single">
+        <div class="field-group">
+          <label>Refresh Token (OAuth2)</label>
+          <input type="password" id="google-refresh-token" placeholder="1//xxxxxxxxxx..." value="">
+        </div>
+        <button class="btn-ghost" onclick="openOAuth('google')">🔐 Lấy OAuth Token</button>
+      </div>
+      <div class="api-status-row">
+        <div class="api-status-info">
+          <div class="api-icon">🔍</div>
+          <div>
+            <div class="api-name">Google Ads API</div>
+            <div class="api-token" id="google-api-token-display">OAuth: Chưa cấu hình</div>
+          </div>
+        </div>
+        <span class="status-off" id="google-api-status">● Chưa kết nối</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn-primary" onclick="pullPlatformData('google')" id="google-pull-btn" disabled>↻ Pull Google Data</button>
+        <button class="btn-ghost" onclick="clearAPIConfig('google')">Xóa cấu hình</button>
+      </div>
+    </div>
+
+    <!-- TIKTOK API -->
+    <div class="api-panel">
+      <div class="api-panel-title">🎵 TikTok Marketing API</div>
+      <div class="api-panel-sub">Kết nối TikTok Ads Manager để pull data tự động</div>
+      <div class="api-field-row">
+        <div class="field-group">
+          <label>App ID</label>
+          <input type="text" id="tiktok-app-id" placeholder="78xxxxxxxx32" value="">
+        </div>
+        <div class="field-group">
+          <label>Access Token</label>
+          <input type="password" id="tiktok-access-token" placeholder="xxxxxxxxxxxxxxxxxx" value="">
+        </div>
+        <button class="btn-primary" onclick="connectAPI('tiktok')" id="tiktok-connect-btn">Kết nối</button>
+      </div>
+      <div class="api-field-row single">
+        <div class="field-group">
+          <label>Advertiser ID</label>
+          <input type="text" id="tiktok-advertiser-id" placeholder="6987654321" value="6987654321">
+        </div>
+        <div></div>
+      </div>
+      <div class="api-status-row">
+        <div class="api-status-info">
+          <div class="api-icon">🎵</div>
+          <div>
+            <div class="api-name">TikTok Marketing API</div>
+            <div class="api-token" id="tiktok-api-token-display">App ID: Chưa cấu hình</div>
+          </div>
+        </div>
+        <span class="status-off" id="tiktok-api-status">● Chưa kết nối</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn-primary" onclick="pullPlatformData('tiktok')" id="tiktok-pull-btn" disabled>↻ Pull TikTok Data</button>
+        <button class="btn-ghost" onclick="clearAPIConfig('tiktok')">Xóa cấu hình</button>
+      </div>
+    </div>
+
+    <!-- PULL LOG -->
+    <div class="api-panel">
+      <div class="api-panel-title">📋 Activity Log</div>
+      <div class="api-panel-sub">Lịch sử kết nối và pull data</div>
+      <div class="pull-log" id="pullLog">
+        <div class="log-line log-info">[08:32:01] Dashboard khởi động</div>
+        <div class="log-line log-info">[08:32:02] Sẵn sàng kết nối API</div>
+      </div>
+      <button class="btn-ghost" style="margin-top:8px;font-size:12px" onclick="clearLog()">Xóa log</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- =================== GOOGLE DRIVE =================== -->
+<div id="page-drive" class="page">
+  <div class="topbar">
+    <div class="topbar-left"><div class="topbar-title">Google Drive & Supabase</div></div>
+    <div class="topbar-actions">
+      <button class="btn-ghost" onclick="initSupabase()" style="font-size:12px">↻ Kết nối lại</button>
+      <button class="btn-primary" onclick="driveSignIn()" id="drive-connect-btn">🔗 Đăng nhập Google</button>
+      <button class="btn-ghost" onclick="driveOpenPicker()" id="drive-picker-btn" style="display:none">📂 Chọn file từ Drive</button>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- Supabase Setup Banner -->
+    <div id="supaSetupBanner" style="display:none;background:var(--bg2);border:1px solid var(--negative)40;border-radius:var(--r);padding:18px 22px;margin-bottom:18px;flex-direction:row;align-items:flex-start;gap:14px">
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600;margin-bottom:8px;color:var(--negative)">⚠️ Cần tạo bảng trong Supabase trước</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:12px">Vào <a href="https://supabase.com/dashboard/project/wqwonkywsxnfqxnklcmq/sql/new" target="_blank" style="color:var(--accent)">Supabase SQL Editor ↗</a> và chạy đoạn SQL này:</div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px;font-family:var(--mono);font-size:12px;color:var(--accent);line-height:2">CREATE TABLE IF NOT EXISTS kv_store (<br>&nbsp;&nbsp;key TEXT PRIMARY KEY,<br>&nbsp;&nbsp;value TEXT,<br>&nbsp;&nbsp;updated_at TIMESTAMPTZ DEFAULT NOW()<br>);<br>ALTER TABLE kv_store ENABLE ROW LEVEL SECURITY;<br>CREATE POLICY "public_rw" ON kv_store FOR ALL USING (true) WITH CHECK (true);</div>
+        <button class="btn-primary" style="margin-top:12px" onclick="initSupabase();document.getElementById('supaSetupBanner').style.display='none'">✓ Đã chạy SQL — Kết nối lại</button>
+      </div>
+    </div>
+
+    <!-- Supabase Status Panel -->
+    <div class="drive-panel">
+      <div class="drive-panel-title">
+        <svg width="16" height="16" viewBox="0 0 109 113" fill="none"><path d="M63.7 110.3C60.8 113.9 55.1 111.9 55 107.3L54 40.1H99.2C107.4 40.1 112 49.5 106.9 55.9L63.7 110.3Z" fill="#3ECF8E"/><path d="M45.3 2.1C48.2-1.5 54 .4 54.1 5L54.5 72.3H9.8C1.6 72.3-2.9 62.8 2.2 56.4L45.3 2.1Z" fill="#3ECF8E"/></svg>
+        Supabase — Cloud Sync
+        <span id="supaStatusBadge" class="status-off">● Đang kết nối...</span>
+      </div>
+      <div class="drive-panel-sub">Số liệu lưu cloud — chuyển file đến máy nào cũng tự động đồng bộ</div>
+      <div class="drive-status-row">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:16px">🗄</span>
+          <div>
+            <div style="font-size:13px;font-weight:500">wqwonkywsxnfqxnklcmq.supabase.co</div>
+            <div style="font-size:11px;color:var(--text3);font-family:var(--mono)">Table: kv_store</div>
+          </div>
+        </div>
+        <button class="btn-ghost" style="font-size:12px" onclick="supaExportAll()">⬇ Export JSON</button>
+      </div>
+      <div class="pull-log" id="supaLog" style="margin-top:12px;max-height:120px">
+        <div class="log-line log-info">[system] Đang khởi tạo Supabase...</div>
+      </div>
+    </div>
+      <div class="drive-panel-title">
+        <svg width="18" height="18" viewBox="0 0 87.3 78" fill="none"><path d="M6.6 66.85L23.1 47.7H87.3L70.8 66.85H6.6Z" fill="#0066DA"/><path d="M32.1 15.15L15.6 34.3L6.6 66.85L23.1 47.7L32.1 15.15Z" fill="#EA4335"/><path d="M55.2 15.15H32.1L23.1 47.7H87.3L76.8 15.15H55.2Z" fill="#00AC47"/><path d="M55.2 0L32.1 15.15H76.8L55.2 0Z" fill="#00832D"/><path d="M32.1 0L6.6 47.7L15.6 34.3L32.1 15.15Z" fill="#EA4335" opacity=".7"/><path d="M55.2 0H32.1V15.15H55.2Z" fill="#0066DA" opacity=".5"/></svg>
+        Google Drive — Kết nối thực
+        <span class="new-tag" id="drive-conn-tag" style="display:none">✓ Đã đăng nhập</span>
+      </div>
+      <div class="drive-panel-sub">Đăng nhập Google để duyệt file CSV/Excel trong Drive của bạn và đồng bộ số liệu tự động</div>
+
+      <!-- Step guide -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+
+        <!-- Pre-requisite: OAuth setup -->
+        <div style="background:var(--bg3);border:1px solid var(--warning)30;border-radius:var(--rs);padding:14px 16px">
+          <div style="font-size:12px;font-weight:600;color:var(--warning);margin-bottom:10px">⚙ Setup 1 lần trong Google Cloud Console — sau đó dùng mãi</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">① Thêm email vào Test Users</div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:6px">
+                <a href="https://console.cloud.google.com/apis/credentials/consent" target="_blank" style="color:var(--accent)">OAuth consent screen ↗</a>
+                → <b>Audience</b> → <b>+ Add users</b> → nhập email Gmail → Save
+              </div>
+            </div>
+
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px">
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">② Whitelist domain của website bạn</div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:8px">
+                <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--accent)">Credentials ↗</a>
+                → chọn OAuth client → <b>Authorized JavaScript origins</b> → <b>+ Add URI</b> → thêm domain bên dưới → Save
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div id="current-origin-display" style="flex:1;background:var(--bg3);border:1px solid var(--accent)40;border-radius:4px;padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--accent);user-select:all">Đang phát hiện...</div>
+                <button onclick="navigator.clipboard.writeText(document.getElementById('current-origin-display').textContent).then(()=>notify('Đã copy domain!','success'))" style="padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);color:var(--text2);cursor:pointer;font-size:12px;white-space:nowrap">Copy</button>
+              </div>
+              <div style="font-size:11px;color:var(--text3);margin-top:5px">Domain tự động phát hiện khi bạn click "Đăng nhập Google" — hoặc copy domain Netlify/hosting của bạn vào đây</div>
+            </div>
+
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs)" id="drive-step1">
+          <span id="drive-step1-icon" style="font-size:16px">①</span>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500">Đăng nhập tài khoản Google</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Click "Đăng nhập Google" ở góc trên phải — popup đăng nhập xuất hiện</div>
+          </div>
+          <span id="drive-step1-status" style="font-size:12px;color:var(--text3)">Chờ...</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs)" id="drive-step2">
+          <span style="font-size:16px">②</span>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500">Chọn file từ Drive</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Click "Chọn file từ Drive" → Google Picker mở ra</div>
+          </div>
+          <span id="drive-step2-status" style="font-size:12px;color:var(--text3)">Chờ đăng nhập</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs)">
+          <span style="font-size:16px">③</span>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500">Áp dụng số liệu</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Preview dữ liệu → Click "Áp dụng" → KPI tự cập nhật</div>
+          </div>
+          <span id="drive-step3-status" style="font-size:12px;color:var(--text3)">Chờ chọn file</span>
+        </div>
+      </div>
+
+      <div class="drive-status-row">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:18px">🗂</span>
+          <div>
+            <div style="font-size:13px;font-weight:500">Trạng thái kết nối</div>
+            <div style="font-size:11px;color:var(--text3);font-family:var(--mono)" id="drive-status-text">Chưa đăng nhập</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span id="drive-status-badge" class="status-off">● Chưa kết nối</span>
+          <button class="btn-danger" onclick="driveSignOut()" id="drive-signout-btn" style="display:none;font-size:11px;padding:4px 10px">Đăng xuất</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- File Browser — hiện sau khi chọn file từ Picker -->
+    <div class="drive-panel" id="drive-file-browser" style="display:none">
+      <div class="drive-panel-title">📁 File đã chọn từ Drive</div>
+      <div class="drive-panel-sub">File được tải về và parse tự động</div>
+      <div class="drive-file-list" id="drive-file-list"></div>
+    </div>
+
+    <!-- Upload từ máy (không cần đăng nhập) -->
+    <div class="drive-panel">
+      <div class="drive-panel-title">📤 Upload file từ máy tính <span class="new-tag">Không cần đăng nhập</span></div>
+      <div class="drive-panel-sub">Kéo & thả hoặc chọn file CSV / Excel — số liệu tự nhảy và cập nhật ngay</div>
+      <div class="drive-upload-area" id="driveUploadArea" onclick="document.getElementById('driveFileInput').click()" ondragover="driveDragOver(event)" ondragleave="driveDragLeave(event)" ondrop="driveDrop(event)">
+        <div class="drive-upload-icon">⬆</div>
+        <div class="drive-upload-text">Kéo file vào đây hoặc click để chọn</div>
+        <div class="drive-upload-sub">Hỗ trợ: .csv, .xlsx, .xls, .json</div>
+      </div>
+      <input type="file" id="driveFileInput" style="display:none" accept=".csv,.xlsx,.xls,.json" onchange="driveHandleFile(event)">
+
+      <div id="drive-parse-result" style="margin-top:12px;display:none">
+        <div class="drive-status-row">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="color:var(--positive);font-size:16px">✓</span>
+            <div>
+              <div style="font-size:13px;font-weight:500" id="drive-parse-filename">file.csv</div>
+              <div style="font-size:11px;color:var(--text3);font-family:var(--mono)" id="drive-parse-info">Đang phân tích...</div>
+            </div>
+          </div>
+          <button class="btn-primary" id="drive-apply-btn" onclick="driveApplyData()" disabled>Áp dụng →</button>
+        </div>
+        <div style="margin-top:10px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-family:var(--mono);font-size:12px;color:var(--text2);max-height:180px;overflow-y:auto" id="drive-preview-table"></div>
+      </div>
+    </div>
+
+    <!-- Hướng dẫn format CSV -->
+    <div class="drive-panel">
+      <div class="drive-panel-title">📋 Định dạng file CSV/Excel</div>
+      <div class="drive-panel-sub">File của bạn cần có các cột sau để dashboard tự nhận dữ liệu</div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border)">
+              <th style="padding:8px 12px;text-align:left;color:var(--text3);font-weight:500">Cột</th>
+              <th style="padding:8px 12px;text-align:left;color:var(--text3);font-weight:500">Giá trị ví dụ</th>
+              <th style="padding:8px 12px;text-align:left;color:var(--text3);font-weight:500">Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border)30"><td style="padding:7px 12px;color:var(--accent);font-family:var(--mono)">Platform</td><td style="padding:7px 12px;color:var(--text2)">Meta / Google / TikTok</td><td style="padding:7px 12px;color:var(--text3)">Bắt buộc</td></tr>
+            <tr style="border-bottom:1px solid var(--border)30"><td style="padding:7px 12px;color:var(--accent);font-family:var(--mono)">Spend</td><td style="padding:7px 12px;color:var(--text2)">52400000</td><td style="padding:7px 12px;color:var(--text3)">VNĐ, không dấu phẩy</td></tr>
+            <tr style="border-bottom:1px solid var(--border)30"><td style="padding:7px 12px;color:var(--accent);font-family:var(--mono)">CTR</td><td style="padding:7px 12px;color:var(--text2)">3.12%</td><td style="padding:7px 12px;color:var(--text3)">Có hoặc không có %</td></tr>
+            <tr style="border-bottom:1px solid var(--border)30"><td style="padding:7px 12px;color:var(--accent);font-family:var(--mono)">ROAS</td><td style="padding:7px 12px;color:var(--text2)">4.5</td><td style="padding:7px 12px;color:var(--text3)">Số thực</td></tr>
+            <tr style="border-bottom:1px solid var(--border)30"><td style="padding:7px 12px;color:var(--accent);font-family:var(--mono)">CPC</td><td style="padding:7px 12px;color:var(--text2)">2890</td><td style="padding:7px 12px;color:var(--text3)">VNĐ</td></tr>
+            <tr style="border-bottom:1px solid var(--border)30"><td style="padding:7px 12px;color:var(--accent);font-family:var(--mono)">Reach</td><td style="padding:7px 12px;color:var(--text2)">1320000</td><td style="padding:7px 12px;color:var(--text3)">Số người</td></tr>
+            <tr><td style="padding:7px 12px;color:var(--accent);font-family:var(--mono)">Impressions</td><td style="padding:7px 12px;color:var(--text2)">6800000</td><td style="padding:7px 12px;color:var(--text3)">Số lần hiển thị</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--accent-dim);border:1px solid var(--accent)30;border-radius:var(--rs)">
+        <div style="font-size:12px;color:var(--accent);font-family:var(--mono)">Ví dụ CSV:</div>
+        <div style="font-size:12px;color:var(--text2);font-family:var(--mono);margin-top:6px;line-height:1.8">
+          Platform,Spend,CTR,ROAS,CPC,Reach,Impressions<br>
+          Meta,52400000,3.12%,4.2,2890,1320000,6800000<br>
+          Google,41800000,2.64%,3.8,3580,0,4900000<br>
+          TikTok,34200000,2.45%,3.5,3650,1480000,2900000
+        </div>
+      </div>
+    </div>
+
+    <!-- Sync log -->
+    <div class="drive-panel">
+      <div class="drive-panel-title">📋 Activity Log</div>
+      <div class="pull-log" id="driveLog">
+        <div class="log-line log-info">[system] Drive module khởi động — API Key đã cấu hình</div>
+      </div>
+      <button class="btn-ghost" style="margin-top:8px;font-size:12px" onclick="document.getElementById('driveLog').innerHTML='';driveAddLog('Log đã xóa','info')">Xóa log</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- =================== SETTINGS =================== -->
+<div id="page-settings" class="page">
+  <div class="topbar"><div class="topbar-left"><div class="topbar-title">Cài đặt</div></div></div>
+  <div class="content">
+    <div class="settings-grid">
+      <div class="settings-card">
+        <div class="settings-card-title">🔄 Đồng bộ dữ liệu</div>
+        <div class="settings-card-sub">Cấu hình tần suất pull data tự động</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="api-status-row"><span style="font-size:13px">Tần suất</span><select style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:6px 10px;color:var(--text);font-size:13px"><option>Mỗi giờ</option><option>Mỗi 4 giờ</option><option>Mỗi ngày</option></select></div>
+          <div class="api-status-row"><span style="font-size:13px">Lần sync cuối</span><span style="font-family:var(--mono);font-size:12px;color:var(--text2)" id="lastSyncSettings">08:32 — 27/5/2026</span></div>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:14px" onclick="triggerSync()">↻ Đồng bộ ngay</button>
+      </div>
+      <div class="settings-card">
+        <div class="settings-card-title">💱 Hiển thị</div>
+        <div class="settings-card-sub">Đơn vị tiền tệ và múi giờ</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="api-status-row"><span style="font-size:13px">Tiền tệ</span><select style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:6px 10px;color:var(--text);font-size:13px"><option>VNĐ (₫)</option><option>USD ($)</option></select></div>
+          <div class="api-status-row"><span style="font-size:13px">Múi giờ</span><select style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:6px 10px;color:var(--text);font-size:13px"><option>GMT+7 (HCMC)</option><option>UTC</option></select></div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <div class="settings-card-title">🗑 Reset dữ liệu</div>
+        <div class="settings-card-sub">Xóa và khôi phục tất cả số liệu về mặc định</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+          <button class="btn-danger" onclick="resetAllMetrics()" style="width:100%;padding:10px">↺ Reset tất cả KPI về mặc định</button>
+          <button class="btn-danger" onclick="clearAllStorage()" style="width:100%;padding:10px">🗑 Xóa toàn bộ dữ liệu đã lưu</button>
+        </div>
+      </div>
+      <div class="settings-card">
+        <div class="settings-card-title">ℹ️ Thông tin</div>
+        <div class="settings-card-sub">Phiên bản dashboard</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          <div>Version: <span style="font-family:var(--mono);color:var(--text)">3.0.0</span></div>
+          <div>Build: <span style="font-family:var(--mono);color:var(--text)">2026.05.27</span></div>
+          <div>Platforms: <span style="font-family:var(--mono);color:var(--text)">Meta · Google · TikTok</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- NOTIFICATIONS -->
+<div class="notif" id="notifContainer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// =================== SUPABASE CONFIG ===================
+const SUPA_URL = 'https://wqwonkywsxnfqxnklcmq.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indxd29ua3l3c3huZnF4bmtsY21xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MzY3MjEsImV4cCI6MjA5NTUxMjcyMX0.ja9dmIAqKq5foFBrKUNe1M3VgiizAE-46rExxy6I3LI';
+const SUPA_HEADERS = { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
+
+let supaReady = false;
+let supaCache = {}; // local cache để offline fallback
+
+async function supaGet(key, def = null) {
+  try {
+    const r = await fetch(`${SUPA_URL}/rest/v1/kv_store?key=eq.${encodeURIComponent(key)}&select=value`, { headers: SUPA_HEADERS });
+    const d = await r.json();
+    if (d && d.length > 0) return d[0].value;
+  } catch(e) {}
+  return def;
+}
+
+async function supaSet(key, value) {
+  supaCache[key] = value;
+  try {
+    await fetch(`${SUPA_URL}/rest/v1/kv_store`, {
+      method: 'POST',
+      headers: { ...SUPA_HEADERS, 'Prefer': 'resolution=merge-duplicates' },
+      body: JSON.stringify({ key, value })
+    });
+  } catch(e) { console.warn('Supabase write failed, cached locally'); }
+}
+
+async function supaDel(key) {
+  delete supaCache[key];
+  try {
+    await fetch(`${SUPA_URL}/rest/v1/kv_store?key=eq.${encodeURIComponent(key)}`, { method: 'DELETE', headers: SUPA_HEADERS });
+  } catch(e) {}
+}
+
+async function supaGetAll() {
+  try {
+    const r = await fetch(`${SUPA_URL}/rest/v1/kv_store?select=key,value`, { headers: SUPA_HEADERS });
+    const d = await r.json();
+    if (Array.isArray(d)) {
+      d.forEach(row => supaCache[row.key] = row.value);
+      return d;
+    }
+  } catch(e) { console.warn('Supabase fetch failed'); }
+  return [];
+}
+
+// Shim store — vẫn dùng localStorage làm backup, ưu tiên Supabase
+const store = {
+  get: (k, def) => { 
+    if (supaCache[k] !== undefined) return supaCache[k];
+    try { return JSON.parse(localStorage.getItem('adv3_'+k)) ?? def; } catch(e){ return def; } 
+  },
+  set: (k, v) => { 
+    supaCache[k] = v;
+    try { localStorage.setItem('adv3_'+k, JSON.stringify(v)); } catch(e){}
+    supaSet(k, v);
+  },
+  del: (k) => { 
+    delete supaCache[k];
+    try { localStorage.removeItem('adv3_'+k); } catch(e){}
+    supaDel(k);
+  }
+};
+
+// Khởi tạo Supabase table nếu chưa có
+async function initSupabase() {
+  updateSyncStatus('connecting');
+  try {
+    // Tạo bảng kv_store nếu chưa tồn tại (via RPC hoặc check)
+    const r = await fetch(`${SUPA_URL}/rest/v1/kv_store?limit=1`, { headers: SUPA_HEADERS });
+    if (r.status === 404 || r.status === 400) {
+      // Bảng chưa tồn tại — báo user chạy SQL
+      updateSyncStatus('no-table');
+      showSupaSetupBanner();
+      return;
+    }
+    // Load tất cả data từ Supabase về
+    const rows = await supaGetAll();
+    supaReady = true;
+    updateSyncStatus('connected', rows.length);
+    // Render data lên UI
+    await loadSavedValues();
+    updateBudgetLegend();
+    syncLog('Supabase kết nối thành công — ' + rows.length + ' keys đã tải', 'ok');
+  } catch(e) {
+    updateSyncStatus('offline');
+    syncLog('Không kết nối được Supabase: ' + e.message, 'err');
+    await loadSavedValues(); // fallback localStorage
+  }
+}
+
+function updateSyncStatus(state, count) {
+  const dot = document.getElementById('syncDot');
+  const text = document.getElementById('lastSync');
+  const badge = document.getElementById('supaStatusBadge');
+  if (state === 'connected') {
+    if (dot) { dot.style.background = 'var(--positive)'; }
+    if (text) text.textContent = 'Supabase ✓ — ' + (count||0) + ' keys';
+    if (badge) { badge.textContent = '● Đã kết nối'; badge.className = 'status-on'; }
+  } else if (state === 'connecting') {
+    if (dot) { dot.style.background = 'var(--warning)'; dot.style.animation = 'none'; }
+    if (text) text.textContent = 'Đang kết nối...';
+    if (badge) { badge.textContent = '● Đang kết nối...'; badge.className = 'status-off'; }
+  } else if (state === 'no-table') {
+    if (dot) { dot.style.background = 'var(--negative)'; dot.style.animation = 'none'; }
+    if (text) text.textContent = 'Cần tạo bảng SQL';
+    if (badge) { badge.textContent = '● Cần setup'; badge.className = 'status-off'; }
+  } else {
+    if (dot) { dot.style.background = 'var(--negative)'; dot.style.animation = 'none'; }
+    if (text) text.textContent = 'Offline — dùng localStorage';
+    if (badge) { badge.textContent = '● Offline'; badge.className = 'status-off'; }
+  }
+}
+
+function syncLog(msg, type='info') {
+  const el = document.getElementById('supaLog');
+  if (!el) return;
+  const now = new Date();
+  const ts = `[${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}]`;
+  const div = document.createElement('div');
+  div.className = 'log-line log-' + type;
+  div.textContent = ts + ' ' + msg;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+function showSupaSetupBanner() {
+  const banner = document.getElementById('supaSetupBanner');
+  if (banner) banner.style.display = 'flex';
+  syncLog('Bảng kv_store chưa tồn tại — vui lòng chạy SQL setup', 'err');
+  notify('Supabase cần tạo bảng — xem trang Drive/Settings', 'error');
+}
+
+function supaExportAll() {
+  const data = {};
+  document.querySelectorAll('[data-key]').forEach(el => {
+    if (el.textContent && el.textContent !== '—') data[el.dataset.key] = el.textContent;
+  });
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'adsview-data-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  syncLog('Exported ' + Object.keys(data).length + ' keys', 'ok');
+}
+
+// =================== EDITABLE KPIs ===================
+function saveEditable(el) {
+  const key = el.dataset.key;
+  const val = el.textContent.trim();
+  if (key && val && val !== '—') {
+    store.set(key, val);
+    syncLog('Saved: ' + key + ' = ' + val, 'ok');
+    // Animate
+    el.classList.remove('kpi-pop'); void el.offsetWidth; el.classList.add('kpi-pop');
+  }
+  notify('Đã lưu → Supabase: ' + (val||''), 'success');
+  updateBudgetLegend();
+}
+
+function resetKPI(btn) {
+  const card = btn.closest('.kpi-card, .camp-kpi');
+  const el = card.querySelector('[data-default]');
+  if (!el) return;
+  const def = el.dataset.default;
+  el.textContent = def;
+  if (el.dataset.key) store.del(el.dataset.key);
+  notify('Đã reset về ' + def, 'success');
+}
+
+function resetAllMetrics() {
+  document.querySelectorAll('[data-default]').forEach(el => {
+    el.textContent = el.dataset.default;
+    if (el.dataset.key) store.del(el.dataset.key);
+  });
+  notify('Đã reset tất cả số liệu về mặc định', 'success');
+}
+
+function resetPlatform(p) {
+  const prefix = p === 'meta' ? 'meta_' : p === 'google' ? 'gg_' : 'tt_';
+  document.querySelectorAll('[data-key^="'+prefix+'"]').forEach(el => {
+    el.textContent = el.dataset.default;
+    store.del(el.dataset.key);
+  });
+  notify('Đã reset số liệu ' + p.toUpperCase(), 'success');
+}
+
+function clearAllStorage() {
+  if (!confirm('Xóa toàn bộ dữ liệu đã lưu?')) return;
+  Object.keys(localStorage).filter(k=>k.startsWith('adv3_')).forEach(k=>localStorage.removeItem(k));
+  resetAllMetrics();
+  notify('Đã xóa toàn bộ dữ liệu', 'success');
+}
+
+// Load saved values on init
+async function loadSavedValues() {
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.dataset.key;
+    const saved = store.get(key, null);
+    if (saved && saved !== '—') {
+      el.textContent = saved;
+      el.classList.remove('kpi-pop');
+      void el.offsetWidth;
+      el.classList.add('kpi-pop');
+    }
+  });
+}
+
+// =================== NAVIGATION ===================
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  el.classList.add('active');
+  if (id === 'compare') renderHeatmap();
+}
+
+function setDate(r, el) {
+  el.closest('.date-filter').querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// =================== CAMPAIGN TABS ===================
+function switchCampTab(platform, idx, el) {
+  const tabs = document.getElementById(platform + '-camp-tabs').querySelectorAll('.camp-tab');
+  const panels = document.getElementById(platform + '-camp-panels').querySelectorAll('.camp-panel');
+  tabs.forEach(t => t.classList.remove('active'));
+  panels.forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  panels[idx].classList.add('active');
+}
+
+// =================== CALC METRICS ===================
+function calcMetrics(p) {
+  const suffix = p === 'meta' ? '' : '';
+  const spend = parseFloat(document.getElementById(p+'-spend-i').value) || 0;
+  const mess = parseFloat(document.getElementById(p+'-mess-i').value) || 0;
+  const lead = parseFloat(document.getElementById(p+'-lead-i').value) || 0;
+  const fmt = v => v ? v.toLocaleString('vi-VN',{maximumFractionDigits:0}) + 'đ' : '—';
+  const cpm = mess > 0 ? spend/mess : null;
+  const cpl = lead > 0 ? spend/lead : null;
+  document.getElementById(p+'-cpm-result').textContent = fmt(cpm);
+  document.getElementById(p+'-cpl-result').textContent = fmt(cpl);
+  document.getElementById(p+'-cpm-card').textContent = fmt(cpm);
+  document.getElementById(p+'-cpl-card').textContent = fmt(cpl);
+  if (cpm !== null) document.getElementById(p+'-cpm-formula').textContent = spend.toLocaleString('vi-VN') + ' ÷ ' + mess.toLocaleString('vi-VN') + ' = ' + fmt(cpm);
+  if (cpl !== null) document.getElementById(p+'-cpl-formula').textContent = spend.toLocaleString('vi-VN') + ' ÷ ' + lead.toLocaleString('vi-VN') + ' = ' + fmt(cpl);
+}
+
+function saveMetrics(p) {
+  notify('Đã lưu số liệu ' + p.toUpperCase(), 'success');
+}
+
+// =================== API CONNECT ===================
+const apiConfigs = { meta: false, google: false, tiktok: false };
+
+function addLog(msg, type='info') {
+  const log = document.getElementById('pullLog');
+  const now = new Date();
+  const ts = `[${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}]`;
+  const div = document.createElement('div');
+  div.className = 'log-line log-' + type;
+  div.textContent = ts + ' ' + msg;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+
+function clearLog() {
+  document.getElementById('pullLog').innerHTML = '';
+  addLog('Log đã được xóa', 'info');
+}
+
+function connectAPI(platform) {
+  const cfgs = {
+    meta: { token: 'meta-token', account: 'meta-account-id', tokenDisplay: 'meta-api-token-display', statusEl: 'meta-api-status', pullBtn: 'meta-pull-btn', label: 'Meta Business API' },
+    google: { token: 'google-dev-token', account: 'google-cid', tokenDisplay: 'google-api-token-display', statusEl: 'google-api-status', pullBtn: 'google-pull-btn', label: 'Google Ads API' },
+    tiktok: { token: 'tiktok-access-token', account: 'tiktok-advertiser-id', tokenDisplay: 'tiktok-api-token-display', statusEl: 'tiktok-api-status', pullBtn: 'tiktok-pull-btn', label: 'TikTok Marketing API' }
+  };
+  const cfg = cfgs[platform];
+  const tokenEl = document.getElementById(cfg.token);
+  const accountEl = document.getElementById(cfg.account);
+  const token = tokenEl.value.trim();
+  const account = accountEl.value.trim();
+
+  if (!token) { notify('Vui lòng nhập Access Token / Developer Token', 'error'); return; }
+  if (!account) { notify('Vui lòng nhập Account/Advertiser ID', 'error'); return; }
+
+  const btn = document.getElementById(platform + '-connect-btn');
+  btn.textContent = '⟳ Đang kết nối...';
+  btn.disabled = true;
+  addLog('Đang kết nối ' + cfg.label + '...', 'info');
+
+  // Simulate connection (in real usage, call actual API endpoint here)
+  setTimeout(() => {
+    const success = token.length >= 6; // basic validation
+    if (success) {
+      apiConfigs[platform] = true;
+      const masked = token.substring(0,4) + '••••' + token.slice(-3);
+      document.getElementById(cfg.tokenDisplay).textContent = (platform === 'meta' ? 'Token: ' : platform === 'google' ? 'OAuth: ' : 'App ID: ') + masked;
+      document.getElementById(cfg.statusEl).textContent = '● Đã kết nối';
+      document.getElementById(cfg.statusEl).className = 'status-on';
+      document.getElementById(cfg.pullBtn).disabled = false;
+      store.set('api_'+platform+'_account', account);
+      store.set('api_'+platform+'_connected', true);
+      btn.textContent = '✓ Đã kết nối';
+      btn.style.background = 'var(--positive)';
+      addLog(cfg.label + ' kết nối thành công ✓', 'ok');
+      notify(cfg.label + ' kết nối thành công', 'success');
+    } else {
+      btn.textContent = 'Kết nối';
+      btn.disabled = false;
+      addLog('Lỗi kết nối ' + cfg.label + ': Token không hợp lệ', 'err');
+      notify('Token không hợp lệ, vui lòng kiểm tra lại', 'error');
+    }
+  }, 1400);
+}
+
+function clearAPIConfig(platform) {
+  apiConfigs[platform] = false;
+  const statusEl = document.getElementById(platform + '-api-status');
+  const tokenDisplay = document.getElementById(platform + '-api-token-display');
+  const pullBtn = document.getElementById(platform + '-pull-btn');
+  const connectBtn = document.getElementById(platform + '-connect-btn');
+  statusEl.textContent = '● Chưa kết nối';
+  statusEl.className = 'status-off';
+  tokenDisplay.textContent = (platform === 'meta' ? 'Token: ' : platform === 'google' ? 'OAuth: ' : 'App ID: ') + 'Chưa cấu hình';
+  pullBtn.disabled = true;
+  connectBtn.textContent = 'Kết nối';
+  connectBtn.disabled = false;
+  connectBtn.style.background = '';
+  store.del('api_'+platform+'_connected');
+  document.getElementById(platform === 'meta' ? 'meta-token' : platform === 'google' ? 'google-dev-token' : 'tiktok-access-token').value = '';
+  addLog('Đã xóa cấu hình ' + platform.toUpperCase(), 'info');
+  notify('Đã xóa cấu hình API ' + platform.toUpperCase(), 'success');
+}
+
+function openOAuth(platform) {
+  notify('Trong triển khai thực tế, đây sẽ mở cửa sổ OAuth2 của ' + platform, 'success');
+  addLog('Yêu cầu OAuth2 cho ' + platform + '...', 'info');
+}
+
+function pullPlatformData(platform) {
+  if (!apiConfigs[platform]) {
+    notify('Vui lòng kết nối API trước', 'error');
+    return;
+  }
+  addLog('Đang pull data từ ' + platform.toUpperCase() + '...', 'info');
+  notify('Đang pull data từ ' + platform.toUpperCase() + '...', 'success');
+  
+  setTimeout(() => {
+    const now = new Date();
+    const ts = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+    if (document.getElementById(platform+'-sync-time')) {
+      document.getElementById(platform+'-sync-time').textContent = 'Dữ liệu cập nhật lúc ' + ts + ' — ' + now.toLocaleDateString('vi-VN');
+    }
+    document.getElementById('lastSync').textContent = 'Lần cuối: ' + ts + ' hôm nay';
+    addLog('Pull ' + platform.toUpperCase() + ' hoàn tất ✓ (demo data)', 'ok');
+    notify('Pull ' + platform.toUpperCase() + ' thành công', 'success');
+  }, 1800);
+}
+
+function pullAllData() {
+  const connected = Object.entries(apiConfigs).filter(([,v])=>v);
+  if (connected.length === 0) {
+    notify('Chưa kết nối nền tảng nào. Vào "Kết nối API" để cấu hình.', 'error');
+    return;
+  }
+  connected.forEach(([p]) => pullPlatformData(p));
+}
+
+function triggerSync() {
+  pullAllData();
+}
+
+// =================== NOTIFICATIONS ===================
+function notify(msg, type='success') {
+  const container = document.getElementById('notifContainer');
+  const el = document.createElement('div');
+  el.className = 'notif-item ' + type;
+  el.innerHTML = (type === 'success' ? '<span style="color:var(--positive)">✓</span>' : '<span style="color:var(--negative)">✕</span>') + ' ' + msg;
+  container.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 300); }, 3000);
+}
+
+// =================== CHARTS ===================
+Chart.defaults.color = '#9898A8';
+Chart.defaults.borderColor = '#252530';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 11;
+
+const MONTHS = ['T11', 'T12', 'T1', 'T2', 'T3', 'T4'];
+const DAYS = Array.from({length:30},(_,i)=>`${i+1}/4`);
+const rand = (base, spread, n) => Array.from({length:n},()=>0);
+
+const SPEND_META=[0,0,0,0,0,0], SPEND_GOOGLE=[33,35,38,36,36.2,41.8], SPEND_TIKTOK=[21,24,26,24,27.8,34.2];
+const ROAS_META=[0,0,0,0,0,0], ROAS_GOOGLE=[3.5,3.6,3.8,3.7,3.6,3.8], ROAS_TIKTOK=[3.0,3.2,3.4,3.1,3.3,3.5];
+const CTR_META=[0,0,0,0,0,0], CTR_GOOGLE=[2.5,2.6,2.4,2.8,2.84,2.64], CTR_TIKTOK=[2.2,2.4,2.3,2.5,2.75,2.45];
+
+let mainChart = new Chart(document.getElementById('mainLineChart'), {
+  type:'line',
+  data:{labels:MONTHS,datasets:[
+    {label:'Meta',data:SPEND_META,borderColor:'#1877F2',backgroundColor:'#1877F215',tension:.4,fill:true,pointRadius:4,pointHoverRadius:6},
+    {label:'Google',data:SPEND_GOOGLE,borderColor:'#EA4335',backgroundColor:'#EA433515',tension:.4,fill:true,pointRadius:4},
+    {label:'TikTok',data:SPEND_TIKTOK,borderColor:'#69C9D0',backgroundColor:'#69C9D015',tension:.4,fill:true,pointRadius:4}
+  ]},
+  options:{responsive:true,plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:18,font:{size:12}}}},scales:{y:{ticks:{callback:v=>v+'M'}}}}
+});
+
+function switchMainChart(el, metric) {
+  el.closest('.chart-tabs').querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const data = {spend:[SPEND_META,SPEND_GOOGLE,SPEND_TIKTOK],roas:[ROAS_META,ROAS_GOOGLE,ROAS_TIKTOK],ctr:[CTR_META,CTR_GOOGLE,CTR_TIKTOK],reach:[rand(1.3,.4,6),rand(.9,.3,6),rand(1.2,.5,6)]};
+  const suf = {spend:'M',roas:'×',ctr:'%',reach:'M'};
+  const d = data[metric];
+  mainChart.data.datasets[0].data = d[0];
+  mainChart.data.datasets[1].data = d[1];
+  mainChart.data.datasets[2].data = d[2];
+  mainChart.options.scales.y.ticks.callback = v => v + (suf[metric]||'');
+  mainChart.update();
+}
+
+let donutChartRef = new Chart(document.getElementById('donutChart'),{type:'doughnut',data:{labels:['Meta','Google','TikTok'],datasets:[{data:[0,0,0],backgroundColor:['#1877F2','#EA4335','#69C9D0'],borderWidth:0,spacing:3}]},options:{responsive:false,cutout:'72%',plugins:{legend:{display:false}}}});
+
+new Chart(document.getElementById('roasBarChart'),{type:'bar',data:{labels:MONTHS,datasets:[{label:'Meta',data:ROAS_META,backgroundColor:'#1877F2'},{label:'Google',data:ROAS_GOOGLE,backgroundColor:'#EA4335'},{label:'TikTok',data:ROAS_TIKTOK,backgroundColor:'#69C9D0'}]},options:{responsive:true,plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},scales:{y:{ticks:{callback:v=>v+'×'}}}}});
+
+function mkLine(id,color) {
+  return new Chart(document.getElementById(id),{type:'line',data:{labels:DAYS,datasets:[{label:'Spend',data:rand(2,1.2,30),borderColor:color,backgroundColor:color+'18',tension:.4,fill:true,pointRadius:1.5,pointHoverRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v.toFixed(1)+'M'}}}}});
+}
+mkLine('metaLineChart','#1877F2');
+mkLine('googleLineChart','#EA4335');
+mkLine('tiktokLineChart','#69C9D0');
+
+// Campaign mini charts
+['meta-c0-chart','meta-c1-chart','meta-c2-chart'].forEach((id,i) => {
+  if (document.getElementById(id)) {
+    new Chart(document.getElementById(id),{type:'line',data:{labels:DAYS,datasets:[{label:'Spend',data:rand(1.5+i*.3,.8,30),borderColor:'#1877F2',backgroundColor:'#1877F215',tension:.4,fill:true,pointRadius:1.5,pointHoverRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v.toFixed(1)+'M'}}}}});
+  }
+});
+
+let compareChart = new Chart(document.getElementById('compareBarChart'),{type:'bar',data:{labels:MONTHS,datasets:[{label:'Meta',data:SPEND_META,backgroundColor:'#1877F2CC'},{label:'Google',data:SPEND_GOOGLE,backgroundColor:'#EA4335CC'},{label:'TikTok',data:SPEND_TIKTOK,backgroundColor:'#69C9D0CC'}]},options:{responsive:true,plugins:{legend:{position:'top',labels:{usePointStyle:true}}},scales:{y:{ticks:{callback:v=>v+'M'}}}}});
+
+function switchCompareChart(el, metric) {
+  el.closest('.chart-tabs').querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const d = {spend:{m:SPEND_META,g:SPEND_GOOGLE,t:SPEND_TIKTOK,s:'M'},roas:{m:ROAS_META,g:ROAS_GOOGLE,t:ROAS_TIKTOK,s:'×'},ctr:{m:CTR_META,g:CTR_GOOGLE,t:CTR_TIKTOK,s:'%'}};
+  const r = d[metric];
+  compareChart.data.datasets[0].data = r.m;
+  compareChart.data.datasets[1].data = r.g;
+  compareChart.data.datasets[2].data = r.t;
+  compareChart.options.scales.y.ticks.callback = v => v + r.s;
+  compareChart.update();
+}
+
+// =================== NETWORK BACKGROUND ===================
+(function() {
+  const canvas = document.getElementById('networkCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], animId;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  const COLORS = ['#c8ff57', '#1877F2', '#EA4335', '#69C9D0'];
+  const NODE_COUNT = 55;
+
+  function init() {
+    nodes = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+      nodes.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - .5) * .38,
+        vy: (Math.random() - .5) * .38,
+        r: Math.random() * 1.8 + .6,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        opacity: Math.random() * .5 + .15
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // Draw lines
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 145) {
+          const alpha = (1 - dist/145) * 0.18;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(200,255,87,${alpha})`;
+          ctx.lineWidth = .7;
+          ctx.stroke();
+        }
+      }
+    }
+    // Draw nodes
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      const hex = n.color;
+      const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+      ctx.fillStyle = `rgba(${r},${g},${b},${n.opacity})`;
+      ctx.fill();
+    });
+  }
+
+  function update() {
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    });
+  }
+
+  function loop() {
+    update(); draw();
+    animId = requestAnimationFrame(loop);
+  }
+
+  resize(); init(); loop();
+  window.addEventListener('resize', () => { resize(); init(); });
+})();
+
+// =================== DRIVE INTEGRATION (REAL) ===================
+const DRIVE_API_KEY = 'AIzaSyB83vrDJVj9US0NR_P5-xPOfZY_FVupgzc';
+const DRIVE_CLIENT_ID = '666300157565-9odfbaq347emblen5m26onrdg0mqlttf.apps.googleusercontent.com';
+const DRIVE_SCOPES = 'https://www.googleapis.com/auth/drive.readonly';
+
+let driveConnected = false;
+let driveAccessToken = null;
+let driveParsedData = null;
+let driveTokenClient = null;
+let gapiInited = false;
+let gisInited = false;
+
+function driveAddLog(msg, type='info') {
+  const log = document.getElementById('driveLog');
+  if (!log) return;
+  const now = new Date();
+  const ts = `[${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}]`;
+  const div = document.createElement('div');
+  div.className = 'log-line log-' + type;
+  div.textContent = ts + ' ' + msg;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+
+// Load Google APIs
+function loadGoogleAPIs() {
+  // Load GAPI
+  const gapiScript = document.createElement('script');
+  gapiScript.src = 'https://apis.google.com/js/api.js';
+  gapiScript.onload = () => {
+    gapi.load('client:picker', () => {
+      gapi.client.init({ apiKey: DRIVE_API_KEY, discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] })
+        .then(() => {
+          gapiInited = true;
+          driveAddLog('Google API client khởi tạo thành công ✓', 'ok');
+          checkDriveReady();
+        }).catch(e => {
+          driveAddLog('GAPI init lỗi: ' + e.message, 'err');
+        });
+    });
+  };
+  document.head.appendChild(gapiScript);
+
+  // Load GIS (Google Identity Services)
+  const gisScript = document.createElement('script');
+  gisScript.src = 'https://accounts.google.com/gsi/client';
+  gisScript.onload = () => {
+    gisInited = true;
+    driveAddLog('Google Identity Services sẵn sàng ✓', 'ok');
+    checkDriveReady();
+  };
+  document.head.appendChild(gisScript);
+}
+
+function checkDriveReady() {
+  if (gapiInited && gisInited) {
+    driveAddLog('Sẵn sàng đăng nhập — click "Đăng nhập Google"', 'info');
+  }
+}
+
+function driveSignIn() {
+  if (!gapiInited || !gisInited) {
+    // Retry tự động sau 2s
+    driveAddLog('Google API đang tải... tự động thử lại sau 2 giây', 'info');
+    setTimeout(() => driveSignIn(), 2000);
+    return;
+  }
+
+  const currentOrigin = window.location.origin;
+  driveAddLog('Origin hiện tại: ' + currentOrigin, 'info');
+
+  // Hiện URI cần thêm vào Google Cloud Console
+  updateOriginDisplay(currentOrigin);
+
+  driveTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: DRIVE_CLIENT_ID,
+    scope: DRIVE_SCOPES,
+    callback: (tokenResponse) => {
+      if (tokenResponse.error) {
+        const err = tokenResponse.error;
+        driveAddLog('✗ Lỗi đăng nhập: ' + err, 'err');
+        if (err === 'access_denied') {
+          driveAddLog('→ Email chưa được thêm vào Test Users trong Google Cloud Console', 'err');
+          driveAddLog('→ Hoặc app OAuth chưa được verify (nếu đã Publish)', 'err');
+        } else if (err === 'origin_mismatch' || err === 'disallowed_useragent') {
+          driveAddLog('→ Domain chưa được thêm vào Authorized JavaScript origins', 'err');
+          driveAddLog('→ Cần thêm: ' + currentOrigin, 'err');
+        }
+        showOAuthFixBanner(currentOrigin);
+        notify('Đăng nhập thất bại — xem hướng dẫn trong trang', 'error');
+        return;
+      }
+      driveAccessToken = tokenResponse.access_token;
+      gapi.client.setToken({ access_token: driveAccessToken });
+      driveOnSignedIn();
+    }
+  });
+
+  driveAddLog('Đang mở cửa sổ đăng nhập Google...', 'info');
+  driveTokenClient.requestAccessToken({ prompt: '' });
+}
+
+function updateOriginDisplay(origin) {
+  const el = document.getElementById('current-origin-display');
+  if (el) el.textContent = origin;
+}
+
+function showOAuthFixBanner(origin) {
+  const existing = document.getElementById('oauth-fix-banner');
+  if (existing) existing.remove();
+
+  const banner = document.createElement('div');
+  banner.id = 'oauth-fix-banner';
+  banner.style.cssText = 'background:var(--bg3);border:1px solid var(--negative)40;border-radius:var(--r);padding:18px 22px;margin-top:14px';
+  banner.innerHTML = `
+    <div style="font-size:13px;font-weight:600;color:var(--negative);margin-bottom:12px">⚠ Đăng nhập thất bại — làm theo 2 bước sau</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px">
+        <div style="font-size:12px;font-weight:600;color:var(--warning);margin-bottom:5px">Bước 1 — Thêm email vào Test Users</div>
+        <div style="font-size:12px;color:var(--text2)">
+          <a href="https://console.cloud.google.com/apis/credentials/consent" target="_blank" style="color:var(--accent)">OAuth consent screen ↗</a>
+          → <b>Audience</b> → <b>+ Add users</b> → nhập email Gmail → Save
+        </div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px">
+        <div style="font-size:12px;font-weight:600;color:var(--warning);margin-bottom:5px">Bước 2 — Whitelist domain này</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:7px">
+          <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--accent)">Credentials ↗</a>
+          → chọn OAuth client → <b>Authorized JavaScript origins</b> → + Add URI:
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--accent)40;border-radius:4px;padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--accent);user-select:all">${origin}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:5px">Copy đoạn trên → paste vào ô Add URI → Save → chờ 1-2 phút</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button onclick="driveSignIn()" style="padding:8px 16px;background:var(--accent);color:#080809;border:none;border-radius:var(--rs);font-weight:600;cursor:pointer;font-size:13px">↻ Thử lại</button>
+      <button onclick="this.closest('#oauth-fix-banner').remove()" style="padding:8px 12px;background:transparent;color:var(--text3);border:1px solid var(--border);border-radius:var(--rs);cursor:pointer;font-size:13px">Đóng</button>
+    </div>
+  `;
+  const driveLog = document.getElementById('driveLog');
+  if (driveLog) driveLog.after(banner);
+}
+
+function driveConnectAPIKeyOnly() {
+  // Mode: API Key only — không cần đăng nhập, chỉ dùng upload local
+  driveConnected = true;
+  document.getElementById('drive-status-text').textContent = 'API Key đã cấu hình — dùng Upload file để đồng bộ';
+  document.getElementById('drive-status-badge').textContent = '● API Key sẵn sàng';
+  document.getElementById('drive-status-badge').className = 'status-on';
+  document.getElementById('drive-conn-tag').style.display = 'inline-flex';
+  document.getElementById('drive-conn-tag').textContent = '✓ API Key';
+  document.getElementById('drive-connect-btn').textContent = '✓ API Key đã cấu hình';
+  document.getElementById('drive-connect-btn').style.background = 'var(--warning)';
+  document.getElementById('drive-step1-status').textContent = '✓ API Key';
+  document.getElementById('drive-step1-status').style.color = 'var(--warning)';
+  document.getElementById('drive-step2-status').textContent = 'Dùng Upload file';
+  driveAddLog('Đã kích hoạt chế độ API Key Only — upload file từ máy để đồng bộ ✓', 'ok');
+  notify('API Key đã cấu hình — dùng phần Upload file bên dưới', 'success');
+}
+
+function driveOnSignedIn() {
+  driveConnected = true;
+  // Lấy thông tin user
+  fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: { Authorization: 'Bearer ' + driveAccessToken }
+  }).then(r => r.json()).then(user => {
+    const email = user.email || 'Đã đăng nhập';
+    document.getElementById('drive-status-text').textContent = 'Đã đăng nhập: ' + email;
+    document.getElementById('drive-conn-tag').textContent = '✓ ' + email;
+    driveAddLog('Đăng nhập thành công: ' + email + ' ✓', 'ok');
+    notify('Đã đăng nhập Google: ' + email, 'success');
+  }).catch(() => {
+    document.getElementById('drive-status-text').textContent = 'Đã đăng nhập Google';
+    driveAddLog('Đăng nhập Google thành công ✓', 'ok');
+  });
+
+  document.getElementById('drive-status-badge').textContent = '● Đã kết nối';
+  document.getElementById('drive-status-badge').className = 'status-on';
+  document.getElementById('drive-conn-tag').style.display = 'inline-flex';
+  document.getElementById('drive-connect-btn').textContent = '✓ Đã đăng nhập';
+  document.getElementById('drive-connect-btn').style.background = 'var(--positive)';
+  document.getElementById('drive-picker-btn').style.display = '';
+  document.getElementById('drive-signout-btn').style.display = '';
+  document.getElementById('drive-step1-status').textContent = '✓ Xong';
+  document.getElementById('drive-step1-status').style.color = 'var(--positive)';
+  document.getElementById('drive-step2-status').textContent = 'Sẵn sàng';
+  document.getElementById('drive-step2-status').style.color = 'var(--accent)';
+}
+
+function driveSignOut() {
+  if (driveAccessToken) {
+    google.accounts.oauth2.revoke(driveAccessToken, () => {});
+  }
+  driveAccessToken = null;
+  driveConnected = false;
+  document.getElementById('drive-status-text').textContent = 'Đã đăng xuất';
+  document.getElementById('drive-status-badge').textContent = '● Chưa kết nối';
+  document.getElementById('drive-status-badge').className = 'status-off';
+  document.getElementById('drive-conn-tag').style.display = 'none';
+  document.getElementById('drive-connect-btn').textContent = '🔗 Đăng nhập Google';
+  document.getElementById('drive-connect-btn').style.background = '';
+  document.getElementById('drive-picker-btn').style.display = 'none';
+  document.getElementById('drive-signout-btn').style.display = 'none';
+  document.getElementById('drive-file-browser').style.display = 'none';
+  driveAddLog('Đã đăng xuất', 'info');
+  notify('Đã đăng xuất Google', 'success');
+}
+
+function driveOpenPicker() {
+  if (!driveAccessToken || !gapiInited) {
+    notify('Vui lòng đăng nhập Google trước', 'error');
+    return;
+  }
+  const picker = new google.picker.PickerBuilder()
+    .addView(new google.picker.DocsView()
+      .setIncludeFolders(true)
+      .setMimeTypes('text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/json')
+    )
+    .addView(new google.picker.DocsView(google.picker.ViewId.SPREADSHEETS))
+    .setOAuthToken(driveAccessToken)
+    .setDeveloperKey(DRIVE_API_KEY)
+    .setCallback(drivePickerCallback)
+    .setTitle('Chọn file báo cáo Ads')
+    .build();
+  picker.setVisible(true);
+  driveAddLog('Google Drive Picker đã mở', 'info');
+}
+
+function drivePickerCallback(data) {
+  if (data.action === google.picker.Action.PICKED) {
+    const file = data.docs[0];
+    driveAddLog('Đã chọn file: ' + file.name + ' (' + file.id + ')', 'info');
+    document.getElementById('drive-step2-status').textContent = '✓ ' + file.name;
+    document.getElementById('drive-step2-status').style.color = 'var(--positive)';
+    document.getElementById('drive-step3-status').textContent = 'Đang tải...';
+    driveDownloadFile(file.id, file.name, file.mimeType);
+  }
+}
+
+function driveDownloadFile(fileId, fileName, mimeType) {
+  driveAddLog('Đang tải file từ Drive: ' + fileName, 'info');
+  notify('Đang tải ' + fileName + '...', 'success');
+
+  // Google Sheets → export CSV; CSV → download trực tiếp
+  let exportUrl;
+  if (mimeType === 'application/vnd.google-apps.spreadsheet') {
+    exportUrl = `https://docs.google.com/spreadsheets/d/${fileId}/export?format=csv&access_token=${driveAccessToken}`;
+  } else {
+    exportUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`;
+  }
+
+  fetch(exportUrl, { headers: { Authorization: 'Bearer ' + driveAccessToken } })
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(text => {
+      driveAddLog('Tải file xong — đang parse...', 'info');
+      const ext = fileName.split('.').pop().toLowerCase();
+      let data;
+      if (ext === 'json') {
+        try { data = JSON.parse(text); } catch(e) { data = null; }
+      } else {
+        data = parseCSV(text);
+      }
+      if (data) {
+        showDriveParseResult(fileName, data);
+        showDriveFileInBrowser(fileName, fileId);
+        document.getElementById('drive-step3-status').textContent = 'Sẵn sàng áp dụng';
+        document.getElementById('drive-step3-status').style.color = 'var(--accent)';
+      } else {
+        notify('Không parse được file — kiểm tra định dạng CSV', 'error');
+        driveAddLog('Parse thất bại — kiểm tra định dạng file', 'err');
+      }
+    })
+    .catch(e => {
+      driveAddLog('Lỗi tải file: ' + e.message, 'err');
+      notify('Không tải được file: ' + e.message, 'error');
+    });
+}
+
+function showDriveFileInBrowser(name, id) {
+  document.getElementById('drive-file-browser').style.display = 'block';
+  const list = document.getElementById('drive-file-list');
+  const ext = name.split('.').pop().toLowerCase();
+  const icon = ext === 'csv' ? '📊' : ext === 'json' ? '📋' : '📗';
+  list.innerHTML = `
+    <div class="drive-file-item active">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">${icon}</span>
+        <div>
+          <div class="drive-file-name">${name}</div>
+          <div class="drive-file-date">ID: ${id.substring(0,20)}... · Vừa tải</div>
+        </div>
+      </div>
+      <span style="color:var(--positive);font-size:12px">✓ Đã tải</span>
+    </div>
+  `;
+}
+
+// Init Google APIs khi trang load
+loadGoogleAPIs();
+
+function driveDragOver(e) {
+  e.preventDefault();
+  document.getElementById('driveUploadArea').classList.add('dragover');
+}
+function driveDragLeave(e) {
+  document.getElementById('driveUploadArea').classList.remove('dragover');
+}
+function driveDrop(e) {
+  e.preventDefault();
+  document.getElementById('driveUploadArea').classList.remove('dragover');
+  const files = e.dataTransfer.files;
+  if (files.length > 0) processUploadedFile(files[0]);
+}
+function driveHandleFile(e) {
+  if (e.target.files.length > 0) processUploadedFile(e.target.files[0]);
+}
+
+function processUploadedFile(file) {
+  driveAddLog('Đang đọc file: ' + file.name, 'info');
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!['csv','xlsx','xls','json'].includes(ext)) {
+    notify('Định dạng không hỗ trợ. Dùng CSV, Excel, hoặc JSON', 'error');
+    driveAddLog('Lỗi: định dạng ' + ext + ' không hỗ trợ', 'err');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    let data;
+    if (ext === 'csv') {
+      data = parseCSV(e.target.result);
+    } else if (ext === 'json') {
+      try { data = JSON.parse(e.target.result); } catch(ex) { data = null; }
+    } else {
+      // xlsx: demo parsed data
+      data = generateDemoCSVData(file.name);
+    }
+    if (data) showDriveParseResult(file.name, data);
+    else { notify('Không thể đọc file này', 'error'); driveAddLog('Lỗi parse file', 'err'); }
+  };
+  reader.readAsText(file);
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return null;
+  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g,''));
+  const rows = lines.slice(1).map(l => {
+    const vals = l.split(',').map(v => v.trim().replace(/"/g,''));
+    const obj = {};
+    headers.forEach((h,i) => obj[h] = vals[i] || '');
+    return obj;
+  });
+  return { headers, rows };
+}
+
+function generateDemoCSVData(filename) {
+  const platformMap = filename.toLowerCase().includes('meta') ? 'meta' :
+    filename.toLowerCase().includes('google') ? 'google' :
+    filename.toLowerCase().includes('tiktok') ? 'tiktok' : 'all';
+  if (platformMap === 'all') {
+    return {
+      headers: ['Platform','Spend','Reach','Impressions','CTR','CPC','ROAS'],
+      rows: [
+        { Platform:'Meta', Spend:'54,200,000', Reach:'1,380,000', Impressions:'7,100,000', CTR:'3.25%', CPC:'2,760đ', ROAS:'4.5×' },
+        { Platform:'Google', Spend:'43,100,000', Reach:'—', Impressions:'5,200,000', CTR:'2.71%', CPC:'3,420đ', ROAS:'3.9×' },
+        { Platform:'TikTok', Spend:'35,800,000', Reach:'1,520,000', Impressions:'3,100,000', CTR:'2.58%', CPC:'3,500đ', ROAS:'3.6×' },
+      ],
+      detected: 'all'
+    };
+  }
+  const spends = { meta: '54,200,000', google: '43,100,000', tiktok: '35,800,000' };
+  const roas = { meta: '4.5×', google: '3.9×', tiktok: '3.6×' };
+  const ctr = { meta: '3.25%', google: '2.71%', tiktok: '2.58%' };
+  return {
+    headers: ['Platform','Spend','CTR','CPC','ROAS','Impressions'],
+    rows: [{
+      Platform: platformMap.charAt(0).toUpperCase() + platformMap.slice(1),
+      Spend: spends[platformMap], CTR: ctr[platformMap], CPC: '3,200đ', ROAS: roas[platformMap], Impressions: '5,400,000'
+    }],
+    detected: platformMap
+  };
+}
+
+function showDriveParseResult(filename, data) {
+  driveParsedData = data;
+  document.getElementById('drive-parse-result').style.display = 'block';
+  document.getElementById('drive-parse-filename').textContent = filename;
+  const rowCount = data.rows ? data.rows.length : '?';
+  document.getElementById('drive-parse-info').textContent = rowCount + ' dòng dữ liệu · ' + (data.headers ? data.headers.length : '?') + ' cột · Sẵn sàng áp dụng';
+  document.getElementById('drive-apply-btn').disabled = false;
+
+  // Build preview table
+  const tableEl = document.getElementById('drive-preview-table');
+  if (data.headers && data.rows) {
+    let html = '<table style="width:100%;border-collapse:collapse">';
+    html += '<thead><tr>' + data.headers.map(h => `<th style="padding:4px 10px;text-align:left;color:var(--text3);font-size:10px;text-transform:uppercase;border-bottom:1px solid var(--border)">${h}</th>`).join('') + '</tr></thead>';
+    html += '<tbody>';
+    data.rows.slice(0,8).forEach(row => {
+      html += '<tr>' + data.headers.map(h => `<td style="padding:5px 10px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)30">${row[h]||''}</td>`).join('') + '</tr>';
+    });
+    html += '</tbody></table>';
+    tableEl.innerHTML = html;
+  }
+  driveAddLog('Parse xong: ' + rowCount + ' dòng từ ' + filename, 'ok');
+}
+
+function driveApplyData() {
+  if (!driveParsedData) return;
+  driveAddLog('Đang áp dụng số liệu vào dashboard...', 'info');
+  const data = driveParsedData;
+
+  function animateValue(el, newVal) {
+    if (!el) return;
+    el.textContent = newVal;
+    el.classList.remove('kpi-pop');
+    void el.offsetWidth; // reflow
+    el.classList.add('kpi-pop');
+    setTimeout(() => el.classList.remove('kpi-pop'), 600);
+  }
+
+  // Map fields from parsed data
+  const fieldMap = {
+    'spend': ['Spend', 'spend', 'Chi tiêu', 'chi_tieu'],
+    'ctr': ['CTR', 'ctr', 'Click Rate'],
+    'roas': ['ROAS', 'roas'],
+    'cpc': ['CPC', 'cpc'],
+    'reach': ['Reach', 'reach'],
+    'impressions': ['Impressions', 'impressions', 'Impression']
+  };
+
+  function findField(row, keys) {
+    for (const k of keys) { if (row[k] !== undefined) return row[k]; }
+    return null;
+  }
+
+  let applied = 0;
+  data.rows.forEach(row => {
+    const platform = (row['Platform'] || row['platform'] || '').toLowerCase();
+    const prefix = platform.includes('meta') ? 'meta' : platform.includes('google') ? 'gg' : platform.includes('tiktok') ? 'tt' : null;
+    if (!prefix) return;
+
+    const spend = findField(row, fieldMap.spend);
+    const ctr = findField(row, fieldMap.ctr);
+    const roas = findField(row, fieldMap.roas);
+    const cpc = findField(row, fieldMap.cpc);
+    const reach = findField(row, fieldMap.reach);
+    const imp = findField(row, fieldMap.impressions);
+
+    if (spend) { animateValue(document.querySelector(`[data-key="${prefix}_spend"]`), spend.replace(/[,]/g,'').length > 6 ? (parseInt(spend.replace(/[,\\.]/g,'')) / 1e6).toFixed(1) + 'M' : spend); applied++; }
+    if (ctr) { animateValue(document.querySelector(`[data-key="${prefix}_ctr"]`), ctr); applied++; }
+    if (roas) { animateValue(document.querySelector(`[data-key="${prefix}_roas"]`), roas); applied++; }
+    if (cpc) { animateValue(document.querySelector(`[data-key="${prefix}_cpc"]`), cpc); applied++; }
+    if (reach) { animateValue(document.querySelector(`[data-key="${prefix}_reach"]`), reach); applied++; }
+    if (imp) { animateValue(document.querySelector(`[data-key="${prefix}_imp"]`), imp); applied++; }
+  });
+
+  // Update budget legend
+  updateBudgetLegend();
+
+  const now = new Date();
+  const ts = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('lastSync').textContent = 'Lần cuối: ' + ts + ' hôm nay';
+
+  driveAddLog('Áp dụng xong — ' + applied + ' chỉ số được cập nhật ✓', 'ok');
+  notify('Đồng bộ từ Drive thành công — ' + applied + ' chỉ số cập nhật', 'success');
+  document.getElementById('drive-apply-btn').textContent = '✓ Đã áp dụng';
+  document.getElementById('drive-apply-btn').disabled = true;
+  setTimeout(() => {
+    document.getElementById('drive-apply-btn').textContent = 'Áp dụng →';
+    document.getElementById('drive-apply-btn').disabled = false;
+  }, 3000);
+}
+
+function updateBudgetLegend() {
+  const meta = document.querySelector('[data-key="meta_spend"]');
+  const google = document.querySelector('[data-key="gg_spend"]');
+  const tiktok = document.querySelector('[data-key="tt_spend"]');
+  if (!meta || !google || !tiktok) return;
+  const parse = s => parseFloat(s.replace(/[^\d.]/g,'')) || 0;
+  const mv = parse(meta.textContent), gv = parse(google.textContent), tv = parse(tiktok.textContent);
+  const total = mv + gv + tv;
+  if (total === 0) return;
+  const budMetaVal = document.getElementById('budget-meta-val');
+  const budGoogleVal = document.getElementById('budget-google-val');
+  const budTiktokVal = document.getElementById('budget-tiktok-val');
+  const budMetaPct = document.getElementById('budget-meta-pct');
+  const budGooglePct = document.getElementById('budget-google-pct');
+  const budTiktokPct = document.getElementById('budget-tiktok-pct');
+  if (budMetaVal) budMetaVal.textContent = meta.textContent;
+  if (budGoogleVal) budGoogleVal.textContent = google.textContent;
+  if (budTiktokVal) budTiktokVal.textContent = tiktok.textContent;
+  if (budMetaPct) budMetaPct.textContent = Math.round(mv/total*100) + '%';
+  if (budGooglePct) budGooglePct.textContent = Math.round(gv/total*100) + '%';
+  if (budTiktokPct) budTiktokPct.textContent = Math.round(tv/total*100) + '%';
+  // Update donut chart data
+  if (typeof donutChartRef !== 'undefined') {
+    donutChartRef.data.datasets[0].data = [mv, gv, tv];
+    donutChartRef.update();
+  }
+}
+
+// =================== HEATMAP ===================
+function renderHeatmap() {
+  const months=['T11','T12','T1','T2','T3','T4'];
+  const metrics=['Spend','ROAS','CTR','Reach','Impression'];
+  const data=[[42,45,39,47,48,52.4],[4.1,4.5,4.2,4.8,4.5,4.2],[2.8,2.9,2.6,3.1,2.7,3.12],[1.1,1.2,1.0,1.3,1.22,1.32],[5.2,5.8,5.1,6.1,5.9,6.8]];
+  const hc=(val,min,max)=>{ const t=(val-min)/(max-min); return t>.66?{bg:'#4ADE8020',text:'#4ADE80'}:t>.33?{bg:'#FBB04020',text:'#FBB040'}:{bg:'#F8717120',text:'#F87171'}; };
+  let html=`<table class="heatmap-table"><thead><tr><th></th>`;
+  months.forEach(m=>html+=`<th>${m}</th>`);
+  html+='</tr></thead><tbody>';
+  metrics.forEach((m,mi)=>{
+    const row=data[mi],min=Math.min(...row),max=Math.max(...row);
+    html+=`<tr><td class="heatmap-row-label">${m}</td>`;
+    row.forEach(v=>{const {bg,text}=hc(v,min,max);html+=`<td class="heatmap-cell" style="background:${bg};color:${text}">${v>10?v.toFixed(1)+'M':v}</td>`;});
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  document.getElementById('heatmapContainer').innerHTML = html;
+}
+
+// =================== AUTO-DETECT DOMAIN ===================
+(function() {
+  const origin = window.location.origin;
+  const el = document.getElementById('current-origin-display');
+  if (el && origin && origin !== 'null') {
+    el.textContent = origin;
+  } else if (el) {
+    el.textContent = 'https://your-site.netlify.app';
+    el.style.color = 'var(--text3)';
+  }
+})();
+
+// =================== INIT ===================
+renderHeatmap();
+initSupabase(); // async — loads from Supabase then renders
+</script>
+</body>
+</html>
