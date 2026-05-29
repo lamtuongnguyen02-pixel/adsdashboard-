@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
 <title>AdsView Dashboard v6</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700;800&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -453,37 +452,37 @@ body { position: relative; }
       <div class="kpi-card accent-card">
         <div class="kpi-label">Tổng chi tiêu <span class="edit-hint">✎ click</span></div>
         <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_spend" onblur="saveEditable(this)">—</div>
-        <div class="kpi-delta delta-up">▲ 12.3% vs tháng trước</div>
+        <div class="kpi-delta" data-delta="true">—</div>
         <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Tổng Reach <span class="edit-hint">✎</span></div>
         <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_reach" onblur="saveEditable(this)">—</div>
-        <div class="kpi-delta delta-up">▲ 8.1%</div>
+        <div class="kpi-delta" data-delta="true">—</div>
         <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Avg. ROAS <span class="edit-hint">✎</span></div>
         <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_roas" onblur="saveEditable(this)">—</div>
-        <div class="kpi-delta delta-down">▼ 0.3×</div>
+        <div class="kpi-delta" data-delta="true">—</div>
         <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Avg. CTR <span class="edit-hint">✎</span></div>
         <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_ctr" onblur="saveEditable(this)">—</div>
-        <div class="kpi-delta delta-up">▲ 0.4%</div>
+        <div class="kpi-delta" data-delta="true">—</div>
         <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Avg. CPC <span class="edit-hint">✎</span></div>
         <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_cpc" onblur="saveEditable(this)">—</div>
-        <div class="kpi-delta delta-down">▼ 5.2%</div>
+        <div class="kpi-delta" data-delta="true">—</div>
         <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Impressions <span class="edit-hint">✎</span></div>
         <div class="kpi-value editable" contenteditable="true" data-default="—" data-key="ov_imp" onblur="saveEditable(this)">—</div>
-        <div class="kpi-delta delta-up">▲ 18.7%</div>
+        <div class="kpi-delta" data-delta="true">—</div>
         <span class="reset-btn-sm" onclick="resetKPI(this)">reset</span>
       </div>
     </div>
@@ -563,12 +562,12 @@ body { position: relative; }
       <div style="font-size:38px">📘</div>
     </div>
     <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-label">Spend <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_spend" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 9.2%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">Reach <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_reach" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 14.5%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">Impression <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_imp" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 22.1%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">CTR <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_ctr" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 0.5%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">CPC <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_cpc" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 3.1%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">CPM <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_cpm" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 1.2%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Spend <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_spend" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Reach <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_reach" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Impression <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_imp" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CTR <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_ctr" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPC <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_cpc" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPM <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="meta_cpm" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
       <div class="kpi-card accent-card"><div class="kpi-label">Cost/Mess</div><div class="kpi-value" id="meta-cpm-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
       <div class="kpi-card accent-card"><div class="kpi-label">Cost/Lead</div><div class="kpi-value" id="meta-cpl-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
     </div>
@@ -612,7 +611,7 @@ body { position: relative; }
             <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_reach" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_ctr" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_cpc" onblur="saveEditable(this)">—</div></div>
-            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_roas" onblur="saveEditable(this)" style="color:var(--positive)">5.8×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_roas" onblur="saveEditable(this)" style="color:var(--positive)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">Frequency</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c0_freq" onblur="saveEditable(this)">—</div></div>
           </div>
         </div>
@@ -630,7 +629,7 @@ body { position: relative; }
             <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_reach" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_ctr" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_cpc" onblur="saveEditable(this)">—</div></div>
-            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_roas" onblur="saveEditable(this)" style="color:var(--positive)">4.2×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_roas" onblur="saveEditable(this)" style="color:var(--positive)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">Frequency</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c1_freq" onblur="saveEditable(this)">—</div></div>
           </div>
         </div>
@@ -648,7 +647,7 @@ body { position: relative; }
             <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_reach" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_ctr" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_cpc" onblur="saveEditable(this)">—</div></div>
-            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_roas" onblur="saveEditable(this)" style="color:var(--warning)">2.9×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_roas" onblur="saveEditable(this)" style="color:var(--warning)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">Frequency</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c2_freq" onblur="saveEditable(this)">—</div></div>
           </div>
         </div>
@@ -666,7 +665,7 @@ body { position: relative; }
             <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_reach" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_ctr" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_cpc" onblur="saveEditable(this)">—</div></div>
-            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_roas" onblur="saveEditable(this)" style="color:var(--negative)">1.4×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_roas" onblur="saveEditable(this)" style="color:var(--negative)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">Frequency</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="meta_c3_freq" onblur="saveEditable(this)">—</div></div>
           </div>
         </div>
@@ -703,12 +702,12 @@ body { position: relative; }
       <div style="font-size:38px">🔍</div>
     </div>
     <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-label">Spend <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_spend" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 15.4%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">Impression <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_imp" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 9.8%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">CTR <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_ctr" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 0.2%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">CPC <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_cpc" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 2.3%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">ROAS <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_roas" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 0.2×</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">CPM <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_cpm" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 0.8%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Spend <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_spend" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Impression <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_imp" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CTR <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_ctr" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPC <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_cpc" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">ROAS <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_roas" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPM <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="gg_cpm" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
       <div class="kpi-card accent-card"><div class="kpi-label">Cost/Mess</div><div class="kpi-value" id="google-cpm-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
       <div class="kpi-card accent-card"><div class="kpi-label">Cost/Lead</div><div class="kpi-value" id="google-cpl-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
     </div>
@@ -750,7 +749,7 @@ body { position: relative; }
             <div class="camp-kpi"><div class="camp-kpi-label">Impression</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_imp" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_ctr" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_cpc" onblur="saveEditable(this)">—</div></div>
-            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_roas" onblur="saveEditable(this)" style="color:var(--positive)">6.1×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_roas" onblur="saveEditable(this)" style="color:var(--positive)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">Conv. Rate</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c0_cvr" onblur="saveEditable(this)">—</div></div>
           </div>
         </div>
@@ -766,7 +765,7 @@ body { position: relative; }
             <div class="camp-kpi"><div class="camp-kpi-label">Impression</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_imp" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_ctr" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_cpc" onblur="saveEditable(this)">—</div></div>
-            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_roas" onblur="saveEditable(this)" style="color:var(--warning)">3.2×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_roas" onblur="saveEditable(this)" style="color:var(--warning)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">Conv. Rate</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c1_cvr" onblur="saveEditable(this)">—</div></div>
           </div>
         </div>
@@ -782,7 +781,7 @@ body { position: relative; }
             <div class="camp-kpi"><div class="camp-kpi-label">Impression</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_imp" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_ctr" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CPC</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_cpc" onblur="saveEditable(this)">—</div></div>
-            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_roas" onblur="saveEditable(this)" style="color:var(--warning)">2.8×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_roas" onblur="saveEditable(this)" style="color:var(--warning)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">View-Through</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c2_vt" onblur="saveEditable(this)">—</div></div>
           </div>
         </div>
@@ -798,7 +797,7 @@ body { position: relative; }
             <div class="camp-kpi"><div class="camp-kpi-label">Impression</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_imp" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_ctr" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CPV</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_cpv" onblur="saveEditable(this)">—</div></div>
-            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_roas" onblur="saveEditable(this)" style="color:var(--negative)">1.2×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_roas" onblur="saveEditable(this)" style="color:var(--negative)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">View Rate</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="gg_c3_vr" onblur="saveEditable(this)">—</div></div>
           </div>
         </div>
@@ -831,12 +830,12 @@ body { position: relative; }
       <div style="font-size:38px">🎵</div>
     </div>
     <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-label">Spend <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_spend" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 22.8%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">Reach <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_reach" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 31.2%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">Impression <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_imp" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 25.4%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">CTR <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_ctr" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 0.3%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">CPC <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_cpc" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-up">▲ 1.1%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
-      <div class="kpi-card"><div class="kpi-label">CPM <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_cpm" onblur="saveEditable(this)">—</div><div class="kpi-delta delta-down">▼ 2.0%</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Spend <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_spend" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Reach <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_reach" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">Impression <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_imp" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CTR <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_ctr" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPC <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_cpc" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
+      <div class="kpi-card"><div class="kpi-label">CPM <span class="edit-hint">✎</span></div><div class="kpi-value editable" contenteditable="true" data-default="—" data-key="tt_cpm" onblur="saveEditable(this)">—</div><div class="kpi-delta" data-delta="true">—</div><span class="reset-btn-sm" onclick="resetKPI(this)">reset</span></div>
       <div class="kpi-card accent-card"><div class="kpi-label">Cost/Mess</div><div class="kpi-value" id="tiktok-cpm-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
       <div class="kpi-card accent-card"><div class="kpi-label">Cost/Lead</div><div class="kpi-value" id="tiktok-cpl-card">—</div><div class="kpi-delta" style="color:var(--text3)">Nhập bên dưới</div></div>
     </div>
@@ -892,7 +891,7 @@ body { position: relative; }
             <div class="camp-kpi"><div class="camp-kpi-label">Reach</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_reach" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CTR</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_ctr" onblur="saveEditable(this)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">Conv. Rate</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_cvr" onblur="saveEditable(this)">—</div></div>
-            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_roas" onblur="saveEditable(this)" style="color:var(--positive)">3.5×</div></div>
+            <div class="camp-kpi"><div class="camp-kpi-label">ROAS</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_roas" onblur="saveEditable(this)" style="color:var(--positive)">—</div></div>
             <div class="camp-kpi"><div class="camp-kpi-label">CPM</div><div class="camp-kpi-val editable" contenteditable="true" data-default="—" data-key="tt_c1_cpm" onblur="saveEditable(this)">—</div></div>
           </div>
         </div>
@@ -1140,41 +1139,11 @@ body { position: relative; }
 
       <!-- Step guide -->
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
-
-        <!-- Pre-requisite: OAuth setup -->
-        <div style="background:var(--bg3);border:1px solid var(--warning)30;border-radius:var(--rs);padding:14px 16px">
-          <div style="font-size:12px;font-weight:600;color:var(--warning);margin-bottom:10px">⚙ Setup 1 lần trong Google Cloud Console — sau đó dùng mãi</div>
-          <div style="display:flex;flex-direction:column;gap:10px">
-
-            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px">
-              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">① Thêm email vào Test Users</div>
-              <div style="font-size:11px;color:var(--text2);margin-bottom:6px">
-                <a href="https://console.cloud.google.com/apis/credentials/consent" target="_blank" style="color:var(--accent)">OAuth consent screen ↗</a>
-                → <b>Audience</b> → <b>+ Add users</b> → nhập email Gmail → Save
-              </div>
-            </div>
-
-            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px">
-              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">② Whitelist domain của website bạn</div>
-              <div style="font-size:11px;color:var(--text2);margin-bottom:8px">
-                <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--accent)">Credentials ↗</a>
-                → chọn OAuth client → <b>Authorized JavaScript origins</b> → <b>+ Add URI</b> → thêm domain bên dưới → Save
-              </div>
-              <div style="display:flex;align-items:center;gap:8px">
-                <div id="current-origin-display" style="flex:1;background:var(--bg3);border:1px solid var(--accent)40;border-radius:4px;padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--accent);user-select:all">Đang phát hiện...</div>
-                <button onclick="navigator.clipboard.writeText(document.getElementById('current-origin-display').textContent).then(()=>notify('Đã copy domain!','success'))" style="padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);color:var(--text2);cursor:pointer;font-size:12px;white-space:nowrap">Copy</button>
-              </div>
-              <div style="font-size:11px;color:var(--text3);margin-top:5px">Domain tự động phát hiện khi bạn click "Đăng nhập Google" — hoặc copy domain Netlify/hosting của bạn vào đây</div>
-            </div>
-
-          </div>
-        </div>
-
         <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs)" id="drive-step1">
           <span id="drive-step1-icon" style="font-size:16px">①</span>
           <div style="flex:1">
             <div style="font-size:13px;font-weight:500">Đăng nhập tài khoản Google</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px">Click "Đăng nhập Google" ở góc trên phải — popup đăng nhập xuất hiện</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Click "Đăng nhập Google" ở góc trên phải</div>
           </div>
           <span id="drive-step1-status" style="font-size:12px;color:var(--text3)">Chờ...</span>
         </div>
@@ -1211,7 +1180,24 @@ body { position: relative; }
       </div>
     </div>
 
-    <!-- File Browser — hiện sau khi chọn file từ Picker -->
+    <!-- Backend Panel -->
+    <div class="drive-panel">
+      <div class="drive-panel-title">⚡ Backend — Supabase REST API</div>
+      <div class="drive-panel-sub">Quản lý data trực tiếp trên cloud database</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+        <button class="btn-primary" onclick="backendLoadAll()" style="font-size:13px">⬇ Load từ Supabase</button>
+        <button class="btn-ghost" onclick="supaExportAll()" style="font-size:13px">📤 Export JSON</button>
+        <button class="btn-ghost" onclick="backendWipeAll()" style="font-size:13px;color:var(--negative)">🗑 Xóa tất cả data</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <button class="btn-ghost" onclick="backendSaveMetrics('meta', getMetrics('meta'))" style="font-size:12px">💾 Lưu Meta</button>
+        <button class="btn-ghost" onclick="backendSaveMetrics('gg', getMetrics('gg'))" style="font-size:12px">💾 Lưu Google</button>
+        <button class="btn-ghost" onclick="backendSaveMetrics('tt', getMetrics('tt'))" style="font-size:12px">💾 Lưu TikTok</button>
+      </div>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);font-size:12px;color:var(--text3)">
+        🔄 Auto-sync: mỗi <strong style="color:var(--text2)">30 giây</strong> — mở file ở bất kỳ máy nào cũng nhận data mới nhất
+      </div>
+    </div>
     <div class="drive-panel" id="drive-file-browser" style="display:none">
       <div class="drive-panel-title">📁 File đã chọn từ Drive</div>
       <div class="drive-panel-sub">File được tải về và parse tự động</div>
@@ -1423,8 +1409,8 @@ async function initSupabase() {
     supaReady = true;
     updateSyncStatus('connected', rows.length);
     // Render data lên UI
-    await loadSavedValues();
-    updateBudgetLegend();
+    await backendLoadAll();
+    startRealtimeSync();
     syncLog('Supabase kết nối thành công — ' + rows.length + ' keys đã tải', 'ok');
   } catch(e) {
     updateSyncStatus('offline');
@@ -1475,6 +1461,104 @@ function showSupaSetupBanner() {
   notify('Supabase cần tạo bảng — xem trang Drive/Settings', 'error');
 }
 
+// =================== EDITABLE KPIs ===================
+function saveEditable(el) {
+  const key = el.dataset.key;
+  const val = el.textContent.trim();
+  if (!key || !val || val === '—') return;
+  
+  // Lưu vào Supabase
+  store.set(key, val);
+  syncLog('✓ ' + key + ' = ' + val, 'ok');
+
+  // Animate number pop
+  el.classList.remove('kpi-pop'); void el.offsetWidth; el.classList.add('kpi-pop');
+
+  // Tính delta so với lần lưu trước
+  const prevKey = key + '_prev';
+  const prevVal = store.get(prevKey, null);
+  const deltaEl = el.closest('.kpi-card')?.querySelector('[data-delta]');
+  if (deltaEl) {
+    if (prevVal) {
+      const prev = parseFloat(prevVal.replace(/[^0-9.]/g,''));
+      const curr = parseFloat(val.replace(/[^0-9.]/g,''));
+      if (!isNaN(prev) && !isNaN(curr) && prev !== 0) {
+        const pct = ((curr - prev) / prev * 100).toFixed(1);
+        const up = curr >= prev;
+        deltaEl.textContent = (up ? '▲ ' : '▼ ') + Math.abs(pct) + '%';
+        deltaEl.className = 'kpi-delta ' + (up ? 'delta-up' : 'delta-down');
+      }
+    }
+    store.set(prevKey, val); // cập nhật prev
+  }
+
+  notify('Đã lưu → Supabase', 'success');
+  updateBudgetLegend();
+}
+
+// =================== BACKEND: SUPABASE EDGE FUNCTION ===================
+// Edge Function deploy tại: supabase.com/dashboard/project/wqwonkywsxnfqxnklcmq/functions
+// Tên function: sync-metrics
+// Code dưới đây dùng REST API trực tiếp — không cần deploy thêm
+
+async function backendSaveMetrics(platform, metrics) {
+  // Lưu toàn bộ metrics của 1 platform lên Supabase
+  const key = 'platform_' + platform;
+  const payload = { ...metrics, updated_at: new Date().toISOString() };
+  await supaSet(key, JSON.stringify(payload));
+  syncLog('Backend: platform_' + platform + ' saved', 'ok');
+}
+
+async function backendLoadAll() {
+  // Load tất cả data từ Supabase và render UI
+  syncLog('Đang tải data từ Supabase...', 'info');
+  const rows = await supaGetAll();
+  if (!rows.length) { syncLog('Không có data trên Supabase', 'info'); return; }
+
+  let updated = 0;
+  rows.forEach(row => {
+    const el = document.querySelector(`[data-key="${row.key}"]`);
+    if (el && row.value && row.value !== '—') {
+      el.textContent = row.value;
+      el.classList.remove('kpi-pop'); void el.offsetWidth; el.classList.add('kpi-pop');
+      updated++;
+    }
+    // Platform block (từ backendSaveMetrics)
+    if (row.key.startsWith('platform_')) {
+      try {
+        const data = JSON.parse(row.value);
+        const p = row.key.replace('platform_','');
+        Object.entries(data).forEach(([k,v]) => {
+          if (k === 'updated_at') return;
+          const el2 = document.querySelector(`[data-key="${p}_${k}"]`);
+          if (el2 && v) { el2.textContent = v; updated++; }
+        });
+      } catch(e) {}
+    }
+  });
+
+  updateBudgetLegend();
+  syncLog('Backend load xong — ' + updated + ' fields cập nhật ✓', 'ok');
+  updateSyncStatus('connected', rows.length);
+  
+  const now = new Date();
+  const ts = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  const lastSyncEl = document.getElementById('lastSync');
+  if (lastSyncEl) lastSyncEl.textContent = 'Supabase ✓ — ' + ts;
+}
+
+// Realtime: poll Supabase mỗi 30 giây để đồng bộ
+let realtimePollInterval = null;
+function startRealtimeSync() {
+  if (realtimePollInterval) clearInterval(realtimePollInterval);
+  realtimePollInterval = setInterval(async () => {
+    if (!supaReady) return;
+    syncLog('Auto-sync...', 'info');
+    await backendLoadAll();
+  }, 30000); // 30 giây
+  syncLog('Auto-sync bật — mỗi 30 giây', 'ok');
+}
+
 function supaExportAll() {
   const data = {};
   document.querySelectorAll('[data-key]').forEach(el => {
@@ -1488,18 +1572,29 @@ function supaExportAll() {
   syncLog('Exported ' + Object.keys(data).length + ' keys', 'ok');
 }
 
-// =================== EDITABLE KPIs ===================
-function saveEditable(el) {
-  const key = el.dataset.key;
-  const val = el.textContent.trim();
-  if (key && val && val !== '—') {
-    store.set(key, val);
-    syncLog('Saved: ' + key + ' = ' + val, 'ok');
-    // Animate
-    el.classList.remove('kpi-pop'); void el.offsetWidth; el.classList.add('kpi-pop');
+function getMetrics(prefix) {
+  const metrics = {};
+  document.querySelectorAll(`[data-key^="${prefix}_"]`).forEach(el => {
+    const subkey = el.dataset.key.replace(prefix + '_', '');
+    const val = el.textContent.trim();
+    if (val && val !== '—') metrics[subkey] = val;
+  });
+  return metrics;
+}
+
+async function backendWipeAll() {
+  if (!confirm('Xóa TẤT CẢ data trên Supabase? Không thể hoàn tác!')) return;
+  syncLog('Đang xóa tất cả data...', 'info');
+  try {
+    await fetch(`${SUPA_URL}/rest/v1/kv_store`, { method: 'DELETE', headers: SUPA_HEADERS });
+    Object.keys(supaCache).forEach(k => delete supaCache[k]);
+    document.querySelectorAll('[data-key]').forEach(el => el.textContent = '—');
+    updateBudgetLegend();
+    syncLog('Đã xóa toàn bộ data ✓', 'ok');
+    notify('Đã xóa tất cả data Supabase', 'success');
+  } catch(e) {
+    syncLog('Xóa thất bại: ' + e.message, 'err');
   }
-  notify('Đã lưu → Supabase: ' + (val||''), 'success');
-  updateBudgetLegend();
 }
 
 function resetKPI(btn) {
@@ -1882,6 +1977,7 @@ let driveParsedData = null;
 let driveTokenClient = null;
 let gapiInited = false;
 let gisInited = false;
+let driveInitRetries = 0;
 
 function driveAddLog(msg, type='info') {
   const log = document.getElementById('driveLog');
@@ -1897,121 +1993,92 @@ function driveAddLog(msg, type='info') {
 
 // Load Google APIs
 function loadGoogleAPIs() {
-  // Load GAPI
+  driveAddLog('Đang tải Google API scripts...', 'info');
+
   const gapiScript = document.createElement('script');
   gapiScript.src = 'https://apis.google.com/js/api.js';
   gapiScript.onload = () => {
-    gapi.load('client:picker', () => {
-      gapi.client.init({ apiKey: DRIVE_API_KEY, discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] })
-        .then(() => {
-          gapiInited = true;
-          driveAddLog('Google API client khởi tạo thành công ✓', 'ok');
-          checkDriveReady();
-        }).catch(e => {
-          driveAddLog('GAPI init lỗi: ' + e.message, 'err');
+    gapi.load('client:picker', async () => {
+      try {
+        await gapi.client.init({
+          apiKey: DRIVE_API_KEY,
+          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
         });
+        gapiInited = true;
+        driveAddLog('Google API client ✓', 'ok');
+        checkDriveReady();
+      } catch(e) {
+        driveAddLog('GAPI lỗi: ' + (e.message || JSON.stringify(e)), 'err');
+        // Vẫn cho phép dùng — picker có thể vẫn hoạt động
+        gapiInited = true;
+        checkDriveReady();
+      }
     });
   };
+  gapiScript.onerror = () => driveAddLog('Không tải được GAPI — kiểm tra kết nối mạng', 'err');
   document.head.appendChild(gapiScript);
 
-  // Load GIS (Google Identity Services)
   const gisScript = document.createElement('script');
   gisScript.src = 'https://accounts.google.com/gsi/client';
   gisScript.onload = () => {
     gisInited = true;
-    driveAddLog('Google Identity Services sẵn sàng ✓', 'ok');
+    driveAddLog('Google Identity Services ✓', 'ok');
     checkDriveReady();
   };
+  gisScript.onerror = () => driveAddLog('Không tải được GIS — kiểm tra kết nối mạng', 'err');
   document.head.appendChild(gisScript);
 }
 
 function checkDriveReady() {
   if (gapiInited && gisInited) {
-    driveAddLog('Sẵn sàng đăng nhập — click "Đăng nhập Google"', 'info');
+    driveAddLog('✓ Sẵn sàng — click "Đăng nhập Google" để bắt đầu', 'ok');
+    document.getElementById('drive-connect-btn').disabled = false;
   }
 }
 
 function driveSignIn() {
-  if (!gapiInited || !gisInited) {
-    // Retry tự động sau 2s
-    driveAddLog('Google API đang tải... tự động thử lại sau 2 giây', 'info');
-    setTimeout(() => driveSignIn(), 2000);
+  if (!gisInited) {
+    // Thử load lại nếu chưa xong
+    if (driveInitRetries < 3) {
+      driveInitRetries++;
+      driveAddLog('Google API chưa sẵn sàng, đang thử lại... (' + driveInitRetries + '/3)', 'info');
+      setTimeout(() => driveSignIn(), 1500);
+    } else {
+      driveAddLog('Không tải được Google API — kiểm tra kết nối mạng hoặc thử mở file qua localhost', 'err');
+      notify('Không tải được Google API. Thử dùng Upload file thay thế.', 'error');
+    }
     return;
   }
 
-  const currentOrigin = window.location.origin;
-  driveAddLog('Origin hiện tại: ' + currentOrigin, 'info');
-
-  // Hiện URI cần thêm vào Google Cloud Console
-  updateOriginDisplay(currentOrigin);
-
-  driveTokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: DRIVE_CLIENT_ID,
-    scope: DRIVE_SCOPES,
-    callback: (tokenResponse) => {
-      if (tokenResponse.error) {
-        const err = tokenResponse.error;
-        driveAddLog('✗ Lỗi đăng nhập: ' + err, 'err');
-        if (err === 'access_denied') {
-          driveAddLog('→ Email chưa được thêm vào Test Users trong Google Cloud Console', 'err');
-          driveAddLog('→ Hoặc app OAuth chưa được verify (nếu đã Publish)', 'err');
-        } else if (err === 'origin_mismatch' || err === 'disallowed_useragent') {
-          driveAddLog('→ Domain chưa được thêm vào Authorized JavaScript origins', 'err');
-          driveAddLog('→ Cần thêm: ' + currentOrigin, 'err');
-        }
-        showOAuthFixBanner(currentOrigin);
-        notify('Đăng nhập thất bại — xem hướng dẫn trong trang', 'error');
-        return;
-      }
-      driveAccessToken = tokenResponse.access_token;
-      gapi.client.setToken({ access_token: driveAccessToken });
-      driveOnSignedIn();
-    }
-  });
-
   driveAddLog('Đang mở cửa sổ đăng nhập Google...', 'info');
-  driveTokenClient.requestAccessToken({ prompt: '' });
-}
 
-function updateOriginDisplay(origin) {
-  const el = document.getElementById('current-origin-display');
-  if (el) el.textContent = origin;
-}
-
-function showOAuthFixBanner(origin) {
-  const existing = document.getElementById('oauth-fix-banner');
-  if (existing) existing.remove();
-
-  const banner = document.createElement('div');
-  banner.id = 'oauth-fix-banner';
-  banner.style.cssText = 'background:var(--bg3);border:1px solid var(--negative)40;border-radius:var(--r);padding:18px 22px;margin-top:14px';
-  banner.innerHTML = `
-    <div style="font-size:13px;font-weight:600;color:var(--negative);margin-bottom:12px">⚠ Đăng nhập thất bại — làm theo 2 bước sau</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px">
-        <div style="font-size:12px;font-weight:600;color:var(--warning);margin-bottom:5px">Bước 1 — Thêm email vào Test Users</div>
-        <div style="font-size:12px;color:var(--text2)">
-          <a href="https://console.cloud.google.com/apis/credentials/consent" target="_blank" style="color:var(--accent)">OAuth consent screen ↗</a>
-          → <b>Audience</b> → <b>+ Add users</b> → nhập email Gmail → Save
-        </div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px">
-        <div style="font-size:12px;font-weight:600;color:var(--warning);margin-bottom:5px">Bước 2 — Whitelist domain này</div>
-        <div style="font-size:12px;color:var(--text2);margin-bottom:7px">
-          <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--accent)">Credentials ↗</a>
-          → chọn OAuth client → <b>Authorized JavaScript origins</b> → + Add URI:
-        </div>
-        <div style="background:var(--bg3);border:1px solid var(--accent)40;border-radius:4px;padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--accent);user-select:all">${origin}</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:5px">Copy đoạn trên → paste vào ô Add URI → Save → chờ 1-2 phút</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;margin-top:12px">
-      <button onclick="driveSignIn()" style="padding:8px 16px;background:var(--accent);color:#080809;border:none;border-radius:var(--rs);font-weight:600;cursor:pointer;font-size:13px">↻ Thử lại</button>
-      <button onclick="this.closest('#oauth-fix-banner').remove()" style="padding:8px 12px;background:transparent;color:var(--text3);border:1px solid var(--border);border-radius:var(--rs);cursor:pointer;font-size:13px">Đóng</button>
-    </div>
-  `;
-  const driveLog = document.getElementById('driveLog');
-  if (driveLog) driveLog.after(banner);
+  try {
+    driveTokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: DRIVE_CLIENT_ID,
+      scope: DRIVE_SCOPES,
+      callback: (tokenResponse) => {
+        if (tokenResponse.error) {
+          let msg = tokenResponse.error;
+          if (msg === 'access_denied') msg = 'Bạn từ chối quyền truy cập';
+          if (msg === 'popup_closed_by_user') msg = 'Popup bị đóng — thử lại';
+          driveAddLog('Đăng nhập thất bại: ' + msg, 'err');
+          notify('Đăng nhập thất bại: ' + msg, 'error');
+          return;
+        }
+        driveAccessToken = tokenResponse.access_token;
+        if (gapiInited) gapi.client.setToken({ access_token: driveAccessToken });
+        driveOnSignedIn();
+      },
+      error_callback: (err) => {
+        driveAddLog('Lỗi OAuth: ' + (err.message || err.type || JSON.stringify(err)), 'err');
+        notify('Lỗi đăng nhập: ' + (err.message || err.type), 'error');
+      }
+    });
+    driveTokenClient.requestAccessToken({ prompt: '' });
+  } catch(e) {
+    driveAddLog('Lỗi khởi tạo OAuth: ' + e.message, 'err');
+    notify('Lỗi: ' + e.message, 'error');
+  }
 }
 
 function driveConnectAPIKeyOnly() {
@@ -2393,18 +2460,6 @@ function renderHeatmap() {
   html+='</tbody></table>';
   document.getElementById('heatmapContainer').innerHTML = html;
 }
-
-// =================== AUTO-DETECT DOMAIN ===================
-(function() {
-  const origin = window.location.origin;
-  const el = document.getElementById('current-origin-display');
-  if (el && origin && origin !== 'null') {
-    el.textContent = origin;
-  } else if (el) {
-    el.textContent = 'https://your-site.netlify.app';
-    el.style.color = 'var(--text3)';
-  }
-})();
 
 // =================== INIT ===================
 renderHeatmap();
